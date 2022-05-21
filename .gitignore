@@ -1,0 +1,15 @@
+.cache
+.config
+.npm
+.pm2
+.ssg
+.bash_history
+.bashrc
+.cloud-locale-test.skip
+.gitconfig
+.profile
+.viminfo
+.wget-hsts
+.ssh/id_rsa
+.ssh/id_rsa.pub
+.ssh/known_hosts
