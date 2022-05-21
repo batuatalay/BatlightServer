@@ -202,6 +202,7 @@
             G:color.rgb.g,
             B:color.rgb.b
         }
+        console.log(sendString);
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     });
     colorWheel2.on('color:change', function(color, changes){
@@ -212,6 +213,7 @@
             G:color.rgb.g,
             B:color.rgb.b
         }
+        console.log(sendString);
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     });
     colorWheel7.on('color:change', function(color, changes){
@@ -222,6 +224,7 @@
             G:color.rgb.g,
             B:color.rgb.b
         }
+        console.log(sendString);
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     });
 </script>

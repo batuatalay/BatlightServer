@@ -244,7 +244,6 @@ function setColor(lampId,colorR,colorG,colorB){
         G:colorG,
         B:colorB
     }
-    console.log(JSON.stringify(sendString));
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
 
 }
