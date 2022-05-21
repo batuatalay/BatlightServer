@@ -213,16 +213,6 @@ $('#scenario3').on('change',function(){
 
     }
 });
-
-
-
-
-
-
-
-
-
-
 function party(lampId,fR,fG,fB,sR,sG,sB){
     var sendString={
         deviceid:lampId,
@@ -254,6 +244,7 @@ function setColor(lampId,colorR,colorG,colorB){
         G:colorG,
         B:colorB
     }
+    console.log(JSON.stringify(sendString));
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
 
 }
