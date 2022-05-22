@@ -187,46 +187,13 @@
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="control.js"></script>
 <script type="text/javascript">
     const ws=new WebSocket("ws://142.93.171.4:3000/");
     var colorWheel1 = new iro.ColorPicker("#colorWheelDemo1");
     var colorWheel2 = new iro.ColorPicker("#colorWheelDemo2");
     var colorWheel7 = new iro.ColorPicker("#colorWheelDemo7");
-    colorWheel1.on('color:change', function(color, changes){
-        device=1;
-        var sendString={
-            deviceid:1,
-            animation:"",
-            R:color.rgb.r,
-            G:color.rgb.g,
-            B:color.rgb.b
-        }
-        console.log(sendString);
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    });
-    colorWheel2.on('color:change', function(color, changes){
-        var sendString={
-            deviceid:2,
-            animation:"",
-            R:color.rgb.r,
-            G:color.rgb.g,
-            B:color.rgb.b
-        }
-        console.log(sendString);
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    });
-    colorWheel7.on('color:change', function(color, changes){
-        var sendString={
-            deviceid:3,
-            animation:"",
-            R:color.rgb.r,
-            G:color.rgb.g,
-            B:color.rgb.b
-        }
-        console.log(sendString);
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    });
 </script>
+
+<script src="control.js"></script>
 </html>
 
