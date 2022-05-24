@@ -11,5 +11,5 @@
 .viminfo
 .wget-hsts
 .DS_Store
-.ssh/*
+.ssh/
 .snap/
