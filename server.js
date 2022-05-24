@@ -15,30 +15,14 @@ wss.on('connection',function connection(ws,req){
         const buf=Buffer.from(message,'utf8');
         var arr=JSON.parse(buf.toString());
 	    if(Object.keys(arr).length==1){
-		 //getColor(arr.message,deskLamp,plantLamp,lambader);
             wss.clients.forEach(function each(client){
                 if(ws!=client){
                     client.send(JSON.stringify(arr.message));
                 }
 
             })
-
-            //console.log("device "+arr.deviceid+" connected");
-            //ws.send("{\"deviceid\":1,\"R\":255,\"G\":0,\"B\":255}");
         }
     })
 });
-
-
-
 app.use(express.static('public'))
-
-function getColor(Data,deskLamp,plantLamp,lambader){
-    switch(Data.deviceid){
-        case '1':
-        deskLamp=Data;
-        break;
-    }
-    console.log(deskLamp);
-}
 
