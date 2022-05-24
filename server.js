@@ -14,11 +14,7 @@ const fs = require('fs');
 wss.on('connection',function connection(ws,req){
     ws.on('message',function incoming(message){
         const buf=Buffer.from(message,'utf8');
-        fs.writeFile('/root/public/log.txt', buf, err => {
-          if (err) {
-            console.error(err);
-          }
-        });
+        fs.appendFileSync("log.txt", buf + " \n");
         var arr=JSON.parse(buf.toString());
 	    if(Object.keys(arr).length==1){
             wss.clients.forEach(function each(client){
