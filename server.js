@@ -10,9 +10,15 @@ const wss=new WebSocket.Server({server});
 var deskLamp;
 var plantLamp;
 var lambader;
+const fs = require('fs');
 wss.on('connection',function connection(ws,req){
     ws.on('message',function incoming(message){
         const buf=Buffer.from(message,'utf8');
+        fs.writeFile('log.txt', buf, err => {
+          if (err) {
+            console.error(err);
+          }
+        });
         var arr=JSON.parse(buf.toString());
 	    if(Object.keys(arr).length==1){
             wss.clients.forEach(function each(client){
