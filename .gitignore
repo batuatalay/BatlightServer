@@ -10,6 +10,6 @@
 .profile
 .viminfo
 .wget-hsts
-.ssh/id_rsa
-.ssh/id_rsa.pub
-.ssh/known_hosts
+.DS_Store
+.ssh/*
+.snap/
