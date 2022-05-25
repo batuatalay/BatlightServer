@@ -182,3 +182,4 @@
 {"deviceid":"1","connection":"allive"} 
 {"deviceid":"1","connection":"allive"} 
 {"deviceid":"1","connection":"allive"} 
+{"message":{"deviceid":2,"animation":"","R":0,"G":0,"B":255}} 
