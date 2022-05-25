@@ -14,5 +14,3 @@
 .ssh/
 .snap/
 .selected_editor
-log.txt
-crontab.txt
