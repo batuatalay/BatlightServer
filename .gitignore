@@ -13,3 +13,7 @@
 .DS_Store
 .ssh/
 .snap/
+.selected_editor
+log.txt
+crontab.txt
+t
