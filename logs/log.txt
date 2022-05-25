@@ -1,3 +1,7 @@
 iii
 bbb
 
+{"deviceid":"2","connection":"allive"} 
+{"deviceid":"1","connection":"allive"} 
+{"message":{"deviceid":1,"animation":"","R":0,"G":8,"B":255}} 
+{"message":{"deviceid":1,"animation":"","R":255,"G":0,"B":17}} 
