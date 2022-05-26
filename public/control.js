@@ -235,6 +235,7 @@ function closeLamp(lamp){
         B:0
     }
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+    $('#client').hide();
 }
 function setColor(lampId,colorR,colorG,colorB){
     var sendString={
@@ -282,3 +283,56 @@ colorWheel1.on('color:change', function(color, changes){
         console.log(sendString);
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     });
+
+/* v2.0
+
+$( document ).ready(function() {
+        var sendString={
+           deviceid:1,
+           action:"alliveCheck"
+        }
+        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+        var sendString={
+           deviceid:2,
+           animation:"alliveCheck"
+        }
+        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+        var sendString={
+           deviceid:3,
+           animation:"alliveCheck"
+        }
+        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+});
+
+ws.onmessage = function(event) {
+    var data= JSON.parse(event.data);
+    console.log(data);
+    var device = data.deviceid;
+    var connection = data.connection;
+    if(connection !== undefined && connection == "allive") {
+        console.log('test');
+        $('#lambader'+device).html('Active');
+    }
+}
+*/
+$('#lamp1').on('click',function () {
+    $('#client').show();
+    $('#desk').hide();
+    $('#plant').hide();
+    $('#lambader').hide();
+    $('#desk').show();
+});
+$('#lamp2').on('click',function () {
+    $('#client').show();
+    $('#desk').hide();
+    $('#plant').hide();
+    $('#lambader').hide();
+    $('#plant').show();
+});
+$('#lamp3').on('click',function () {
+    $('#client').show();
+    $('#desk').hide();
+    $('#plant').hide();
+    $('#lambader').hide();
+    $('#lambader').show();
+});
