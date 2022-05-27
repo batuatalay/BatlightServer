@@ -314,10 +314,15 @@ ws.onopen = function(e) {
         action:"alliveCheck"
     }
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+    var sendString = {
+        deviceid:2,
+        action:"alliveCheck"
+    }
+    ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
 };
 ws.onmessage = ({data}) => {
     var response = JSON.parse(data);
     if(response.action == "allive") {
-        $('#lambader'+response.deviceid).html('Status: <span id="lambader1" style="color:green">Active</span>');
+        $('#lambader'+response.deviceid).html('Status: <span style="color:green">Active</span>');
     }
 }
