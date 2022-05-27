@@ -202,7 +202,17 @@
     </body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript">
-    const ws=new WebSocket("ws://142.93.171.4:3000/");
+
+    let ws = new WebSocket("ws://142.93.171.4:3000/");
+    ws.onopen = function(e) {
+        var sendString = {
+           deviceid:1,
+           action:"alliveCheck"
+        }
+        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+    };
+    ws.onmessage = ({data}) => console.log(data);
+
     var colorWheel1 = new iro.ColorPicker("#colorWheelDemo1");
     var colorWheel2 = new iro.ColorPicker("#colorWheelDemo2");
     var colorWheel7 = new iro.ColorPicker("#colorWheelDemo7");
