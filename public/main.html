@@ -115,13 +115,13 @@
                 <div class="card" id="lamp1" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Bedroom Lamp</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Status: <span id="lambader1">Active</span></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="lambader1"></h6>
                     </div>
                 </div>
                 <div class="card" id="lamp2" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Plant Lamp</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Status: <span id="lambader2">Active</span></h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Status: <span id="lambader2"></span></h6>
                     </div>
                 </div>
                 <div class="card" id="lamp4" style="width: 18rem;">
@@ -204,15 +204,6 @@
     <script type="text/javascript">
 
     let ws = new WebSocket("ws://142.93.171.4:3000/");
-    ws.onopen = function(e) {
-        var sendString = {
-           deviceid:1,
-           action:"alliveCheck"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    };
-    ws.onmessage = ({data}) => console.log(data);
-
     var colorWheel1 = new iro.ColorPicker("#colorWheelDemo1");
     var colorWheel2 = new iro.ColorPicker("#colorWheelDemo2");
     var colorWheel7 = new iro.ColorPicker("#colorWheelDemo7");

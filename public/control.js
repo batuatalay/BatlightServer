@@ -284,36 +284,7 @@ colorWheel1.on('color:change', function(color, changes){
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     });
 
-// v2.0
-// $( document ).ready(function() {
-//         //console.log(ws);
-//         var sendString={
-//            deviceid:1,
-//            action:"alliveCheck"
-//         }
-        // ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-        // var sendString={
-        //    deviceid:2,
-        //    action:"alliveCheck"
-        // }
-        // ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-//         var sendString={
-//            deviceid:3,
-//            animation:"alliveCheck"
-//         }
-//         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-// });
-
-ws.onMessage = function(event) {
-    var data= JSON.parse(event.data);
-    console.log(data);
-    var device = data.deviceid;
-    // var connection = data.connection;
-    // if(connection !== undefined && connection == "allive") {
-    //     console.log('test');
-    //     $('#lambader'+device).html('Active');
-    // }
-}
+//v 2.0
 
 $('#lamp1').on('click',function () {
     $('#client').show();
@@ -336,3 +307,17 @@ $('#lamp3').on('click',function () {
     $('#lambader').hide();
     $('#lambader').show();
 });
+
+ws.onopen = function(e) {
+    var sendString = {
+        deviceid:1,
+        action:"alliveCheck"
+    }
+    ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+};
+ws.onmessage = ({data}) => {
+    var response = JSON.parse(data);
+    if(response.action == "allive") {
+        $('#lambader'+response.deviceid).html('Status: <span id="lambader1" style="color:green">Active</span>');
+    }
+}

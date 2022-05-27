@@ -16,15 +16,14 @@ wss.on('connection',function connection(ws,req){
         const buf=Buffer.from(message,'utf8');
         fs.appendFileSync("logs/log.txt", buf + " \n");
         try{
-		console.log(buf.toString());
             var arr=JSON.parse(buf);
-		if(Object.keys(arr).length==1){
+            if(Object.keys(arr).length==1){
                 wss.clients.forEach(function each(client){
                     if(ws!=client){
                         client.send(JSON.stringify(arr.message));
                     }
 
-                })
+                });
             }
         }
         catch (error) {
