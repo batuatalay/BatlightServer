@@ -17,17 +17,17 @@ wss.on('connection',function connection(ws,req){
         fs.appendFileSync("logs/log.txt", buf + " \n");
         try{
             var arr=JSON.parse(buf.toString());
+            if(Object.keys(arr).length==1){
+                wss.clients.forEach(function each(client){
+                    if(ws!=client){
+                        client.send(JSON.stringify(arr.message));
+                    }
+
+                })
+            }
         }
         catch (error) {
-            console.log(buf.toString());
-        }
-	    if(Object.keys(arr).length==1){
-            wss.clients.forEach(function each(client){
-                if(ws!=client){
-                    client.send(JSON.stringify(arr.message));
-                }
-
-            })
+            console.log(error + buf.toString());
         }
     })
 });
