@@ -2,6 +2,8 @@ $('#client').hide();
 $('#desk').hide();
 $('#plant').hide();
 $('#lambader').hide();
+$('#portable').hide();
+
 $('.close').on('click',function(){
     closeLamp(1);
     closeLamp(2);
@@ -38,6 +40,7 @@ $('#lambs').on('change',function(){
     $('#desk').hide();
     $('#plant').hide();
     $('#lambader').hide();
+    $('#portable').hide();
     $('#'+this.value).show();
 })
 
@@ -216,7 +219,7 @@ $('#scenario3').on('change',function(){
 $('#scenario4').on('change',function(){
        if(this.value=="twoColor"){
         $('#picker4').html("");
-        $('#picker4').html("<div class='wheel' id='colorWheelDemo8'></div><div class='wheel' id='colorWheelDemo9'></div>");
+        $('#picker4').html("<div class='wheel' id='colorWheelDemo11'></div><div class='wheel' id='colorWheelDemo12'></div>");
         $('#btnDiv4').html("<span class='btn btn-success col-md-12' id='btn1'>Set</span>");
         var colorWheel11 = new iro.ColorPicker("#colorWheelDemo11");
         var colorWheel12 = new iro.ColorPicker("#colorWheelDemo12");
@@ -346,6 +349,17 @@ colorWheel1.on('color:change', function(color, changes){
         console.log(sendString);
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     });
+    colorWheel10.on('color:change', function(color, changes){
+        var sendString={
+            deviceid:4,
+            animation:"",
+            R:color.rgb.r,
+            G:color.rgb.g,
+            B:color.rgb.b
+        }
+        console.log(sendString);
+        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+    });
 
 //v 2.0
 
@@ -354,6 +368,7 @@ $('#lamp1').on('click',function () {
     $('#desk').hide();
     $('#plant').hide();
     $('#lambader').hide();
+    $('#portable').hide();
     $('#desk').show();
 });
 $('#lamp2').on('click',function () {
@@ -361,6 +376,7 @@ $('#lamp2').on('click',function () {
     $('#desk').hide();
     $('#plant').hide();
     $('#lambader').hide();
+    $('#portable').hide();
     $('#plant').show();
 });
 $('#lamp3').on('click',function () {
@@ -368,6 +384,7 @@ $('#lamp3').on('click',function () {
     $('#desk').hide();
     $('#plant').hide();
     $('#lambader').hide();
+    $('#portable').hide();
     $('#lambader').show();
 });
 $('#lamp4').on('click',function () {
@@ -375,7 +392,8 @@ $('#lamp4').on('click',function () {
     $('#desk').hide();
     $('#plant').hide();
     $('#lambader').hide();
-    $('#lambader').show();
+    $('#portable').hide();
+    $('#portable').show();
 });
 
 ws.onopen = function(e) {
