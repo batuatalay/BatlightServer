@@ -406,11 +406,11 @@ ws.onopen = function(e) {
         deviceid:2,
         action:"alliveCheck"
     }
+    ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     var sendString = {
         deviceid:3,
         action:"alliveCheck"
     }
-    ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     var sendString = {
         deviceid:4,
