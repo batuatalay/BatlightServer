@@ -171,7 +171,7 @@ $('#scenario3').on('change',function(){
             var arr1=color2.split(',');
             var arr2=color1.split(',');
             var sendString={
-                deviceid:1,
+                deviceid:3,
                 animation:"2color",
                 fr:$.trim(arr1[0]),
                 fg:$.trim(arr1[1]),
@@ -406,6 +406,11 @@ ws.onopen = function(e) {
         deviceid:2,
         action:"alliveCheck"
     }
+    var sendString = {
+        deviceid:3,
+        action:"alliveCheck"
+    }
+    ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     var sendString = {
         deviceid:4,
