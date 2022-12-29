@@ -1,6 +1,15 @@
 Author batuatalay
 
+-> for Launching server
 
-for listening 3000 port
+sudo apt update
+sudo apt install nodejs
+sudo apt install npm
+sudo npm install pm2
+sudo apt install git
 
--> pm2 start server.js
+->for Launching script
+pm2 start server.js
+
+pm2 status
+ if 
