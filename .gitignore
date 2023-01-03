@@ -15,3 +15,7 @@
 .snap/
 .selected_editor
 logs/
+.docker/
+.lesshst
+.sudo_as_admin_successful
+Dockerfile
