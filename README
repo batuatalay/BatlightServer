@@ -17,4 +17,6 @@ https://docs.docker.com/engine/install/ubuntu/
 sudo usermod -aG docker ubuntu
 docker container run -d -p 80:3000 --name batlight -v /home/ubuntu/public:/batlight/public batuatalay/batlight
 
+docker container run -d -p 80:80 --name nginxServer -v /home/ubuntu/public:/usr/share/nginx/html nginx
+
 pm2 status
