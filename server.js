@@ -2,7 +2,7 @@ var express= require('express');
 var app=express();
 const http=require('http');
 const WebSocket=require('ws');
-const port=80;
+const port=3000;
 var server=app.listen(port,function(){
     console.log(port+' dinleniyor');
 });
