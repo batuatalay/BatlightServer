@@ -2,9 +2,9 @@ var express= require('express');
 var app=express();
 const http=require('http');
 const WebSocket=require('ws');
-const port=3000;
-var server=app.listen(3000,function(){
-    console.log(3000+' dinleniyor');
+const port=80;
+var server=app.listen(port,function(){
+    console.log(port+' dinleniyor');
 });
 const wss=new WebSocket.Server({server});
 var deskLamp;
