@@ -11,5 +11,10 @@ sudo apt install git
 ->for Launching script
 pm2 start server.js
 
+OR 
+
+https://docs.docker.com/engine/install/ubuntu/
+sudo usermod -aG docker ubuntu
+
+docker container run -d -p 80:3000 batuatalay/batlight
 pm2 status
- if 
