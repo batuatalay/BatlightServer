@@ -94,7 +94,7 @@ $('#lamp5').on('click',function () {
     $('#plant').hide();
     $('#lambader').hide();
     $('#portable').hide();
-    $('#portable').hide();
+    $('#wall').hide();
     $('#wall').show();
 });
 
