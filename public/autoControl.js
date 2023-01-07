@@ -1,0 +1,35 @@
+$('.close').on('click',function(){
+    closeLamp(1);
+    closeLamp(2);
+    closeLamp(3);
+    closeLamp(4);
+});
+$('.white').on('click',function(){
+ setColor(1,255,255,255);
+ setColor(2,255,255,255);
+ setColor(3,255,255,255);
+ setColor(4,255,255,255);
+});
+$('.amazon').on('click',function(){
+    setColor(1,0,255,150);
+    setColor(2,150,255,0);
+    setColor(3,15,255,15);
+    setColor(4,15,255,15);
+});
+$('.demon').on('click',function(){
+    setColor(1,0,0,255);
+    setColor(2,150,0,255);
+    setColor(3,0,150,255);
+    setColor(4,0,150,255);
+});
+$('.party').on('click',function(){
+    party(1,255,0,0,0,0,255);
+    party(2,0,0,255,255,0,0);
+    party(3,125,0,255,255,0,125);
+});
+$('.hot').on('click',function(){
+    setColor(1,255,0,0);
+    setColor(2,255,0,255);
+    setColor(3,255,0,10);
+    setColor(4,255,0,10);
+});
