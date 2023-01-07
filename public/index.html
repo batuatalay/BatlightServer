@@ -96,7 +96,7 @@
         margin-left: 25px;
         margin-top: 15px;
         }
-        #lamp1, #lamp2, #lamp3, #lamp4{
+        #lamp1, #lamp2, #lamp3, #lamp4, #lamp5{
             cursor: pointer;
             box-shadow: 0px 0px 25px #000;
             border-radius: 25px;
@@ -107,28 +107,34 @@
         <center class="text"><h1>BatLight Main Page</h1></center>
         <div class="container">
             <div class="row">
-                <div class="card" id="lamp3" style="width: 18rem;">
+                <div class="card" id="lamp3" style="width: 14rem;">
                     <div class="card-body">
                         <h5 class="card-title">Cartıllı's Home</h5>
                         <h6 class="card-subtitle mb-2 text-muted" id="lambader3"></h6>
                     </div>
                 </div>
-                <div class="card" id="lamp1" style="width: 18rem;">
+                <div class="card" id="lamp1" style="width: 14rem;">
                     <div class="card-body">
                         <h5 class="card-title">Bedroom Lamp</h5>
                         <h6 class="card-subtitle mb-2 text-muted" id="lambader1"></h6>
                     </div>
                 </div>
-                <div class="card" id="lamp2" style="width: 18rem;">
+                <div class="card" id="lamp2" style="width: 14rem;">
                     <div class="card-body">
                         <h5 class="card-title">Plant Lamp</h5>
                         <h6 class="card-subtitle mb-2 text-muted" id="lambader2"></h6>
                     </div>
                 </div>
-                <div class="card" id="lamp4" style="width: 18rem;">
+                <div class="card" id="lamp4" style="width: 14rem;">
                     <div class="card-body">
                         <h5 class="card-title">Portable Lamp</h5>
                         <h6 class="card-subtitle mb-2 text-muted" id="lambader4"></h6>
+                    </div>
+                </div>
+                <div class="card" id="lamp5" style="width: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Wall Lamp</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" id="lambader5"></h6>
                     </div>
                 </div>
             </div>
@@ -221,6 +227,29 @@
                     </select>
                     <div id="btnDiv4"></div>
                 </div>
+                <div class="device-on col-md-12" id="wall">
+                    <p onclick="closeLamp(4);" class="closeLamp">X</p>
+                    <center><h2>Wall Lamp</h2></center>
+                    <div class="d-flex justify-content-center" id="picker4">
+                        <div class="wheel" id="colorWheelDemo13"></div>
+                    </div>
+                    <label>Scenario</label>
+                    <select id="scenario5" class="form-control">
+                        <option value="">Select scenario</option>
+                        <option value="twoColor">Two Color</option>
+                        <option value="rainbow">rainbow</option>
+                        <option value="fallin">fallin</option>
+                        <option value="redVibe">redVibe</option>
+                        <option value="partyVibe">partyVibe</option>
+                        <!--<option value="rainbow">rainbow</option>
+                        <option value="change">change</option>
+                        <option value="police">police</option>
+                        <option value="redChange">redChange</option>
+                        <option value="blueChange">blueChange</option>
+                        <option value="redToBlueChange">redToBlueChange</option>-->
+                    </select>
+                    <div id="btnDiv5"></div>
+                </div>
             </div>
         </div>
     </body>
@@ -232,6 +261,10 @@
     var colorWheel2 = new iro.ColorPicker("#colorWheelDemo2");
     var colorWheel7 = new iro.ColorPicker("#colorWheelDemo7");
     var colorWheel10 = new iro.ColorPicker("#colorWheelDemo10");
+    var colorWheel13 = new iro.ColorPicker("#colorWheelDemo13");
     </script>
     <script src="control.js"></script>
+    <script src="colorWheelControl.js"></script>
+    <script src="scenarioControl.js"></script>
+    <script src="autoControl.js"></script>
 </html>
