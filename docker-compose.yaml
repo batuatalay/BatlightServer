@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  batlight:
+    image: batuatalay/batlight
+    ports:
+      - "3000:3000"
+    networks:
+      - serverNet
+    restart: always
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - batlight
+    restart: always
+    volumes:
+      - /home/ubuntu/public:/usr/share/nginx/html
+    networks:
+      - serverNet
+networks:
+  serverNet:
+    driver: bridge
+
+

@@ -3,20 +3,43 @@ Author batuatalay
 -> for Launching server
 
 sudo apt update
+
 sudo apt install nodejs
+
 sudo apt install npm
+
 sudo npm install pm2
+
 sudo apt install git
+
 
 ->for Launching script
 pm2 start server.js
 
+
+//Git install //
+adding id_rsa.pub key to git repo.
+git remote add origin git@bitbucket.org:batuatalay_bat/bat-light.git
+git pull origin master
+//
+
 OR 
 
+run Git install
+
 https://docs.docker.com/engine/install/ubuntu/
+
 sudo usermod -aG docker ubuntu
-docker container run -d -p 80:3000 --name batlight -v /home/ubuntu/public:/batlight/public batuatalay/batlight
+
+docker container run -d -p 3000:3000 --name batlight -v /home/ubuntu/public:/batlight/public batuatalay/batlight
 
 docker container run -d -p 80:80 --name nginxServer -v /home/ubuntu/public:/usr/share/nginx/html nginx
 
-pm2 status
+OR
+
+run Git install
+
+sudo apt update
+sudo apt install docker-compose
+
+docker-compose up
