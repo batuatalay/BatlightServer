@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   batlight:
+    container_name: batlight
     image: batuatalay/batlight
     ports:
       - "3000:3000"
@@ -10,6 +11,7 @@ services:
     restart: always
 
   nginx:
+    container_name: nginx
     image: nginx
     ports:
       - "80:80"
