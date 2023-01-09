@@ -39,6 +39,9 @@ function closeLamp(lamp){
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     $('#client').hide();
 }
+function minimize(lamp) {
+    $('#client').hide();
+}
 function setColor(lampId,colorR,colorG,colorB){
     var sendString={
         deviceid:lampId,
