@@ -102,6 +102,8 @@ $('#lamp5').on('click',function () {
 });
 
 function setSinemSettings() {
+
+    alert('test');
     setColor(1,255,59,33);
     setColor(2,255,59,33);
     setColor(3,255,59,33);
