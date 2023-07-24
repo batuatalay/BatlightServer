@@ -42,7 +42,7 @@ $('#sinemSettings').on('click', function(){
     setColor(5,255,59,33);
 })
 
-$('#sinemSettingsText').on('click', function(){
+$('#sinemSettingsButton').on('click', function(){
     setColor(1,255,59,33);
     setColor(2,255,59,33);
     setColor(3,255,59,33);
