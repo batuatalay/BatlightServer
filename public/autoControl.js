@@ -35,9 +35,17 @@ $('.hot').on('click',function(){
 });
 
 $('#sinemSettings').on('click', function(){
-    setColor(1,255,88,46);
-    setColor(2,255,88,46);
-    setColor(3,255,88,46);
-    setColor(4,255,88,46);
-    setColor(5,255,88,46);
+    setColor(1,255,59,33);
+    setColor(2,255,59,33);
+    setColor(3,255,59,33);
+    setColor(4,255,59,33);
+    setColor(5,255,59,33);
+})
+
+$('#sinemSettingsText').on('click', function(){
+    setColor(1,255,59,33);
+    setColor(2,255,59,33);
+    setColor(3,255,59,33);
+    setColor(4,255,59,33);
+    setColor(5,255,59,33);
 })
