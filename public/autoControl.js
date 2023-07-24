@@ -33,3 +33,11 @@ $('.hot').on('click',function(){
     setColor(3,255,0,10);
     setColor(4,255,0,10);
 });
+
+$('#sinemSettings').on('click', function(){
+    setColor(1,255,88,46);
+    setColor(2,255,88,46);
+    setColor(3,255,88,46);
+    setColor(4,255,88,46);
+    setColor(5,255,88,46);
+})

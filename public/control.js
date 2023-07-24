@@ -106,21 +106,21 @@ ws.onopen = function(e) {
         deviceid:1,
         action:"alliveCheck"
     }
-    ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    var sendString = {
-        deviceid:2,
-        action:"alliveCheck"
-    }
+    // ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+    // var sendString = {
+    //     deviceid:2,
+    //     action:"alliveCheck"
+    // }
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     var sendString = {
         deviceid:3,
         action:"alliveCheck"
     }
-    ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    var sendString = {
-        deviceid:4,
-        action:"alliveCheck"
-    }
+    // ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+    // var sendString = {
+    //     deviceid:4,
+    //     action:"alliveCheck"
+    // }
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     var sendString = {
         deviceid:5,
