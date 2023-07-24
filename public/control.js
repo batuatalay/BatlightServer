@@ -54,7 +54,13 @@ function setColor(lampId,colorR,colorG,colorB){
 
 }
 //v 2.0
-
+$('#sinemSettings').on('click', function() {
+    setColor(1,255,59,33);
+    setColor(2,255,59,33);
+    setColor(3,255,59,33);
+    setColor(4,255,59,33);
+    setColor(5,255,59,33);
+});
 $('#lamp1').on('click',function () {
     $('#client').show();
     $('#desk').hide();
