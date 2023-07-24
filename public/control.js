@@ -101,6 +101,10 @@ $('#lamp5').on('click',function () {
     $('#wall').show();
 });
 
+function setSinemSettings() {
+    alert('test');
+}
+
 ws.onopen = function(e) {
     var sendString = {
         deviceid:1,
