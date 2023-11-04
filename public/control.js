@@ -43,6 +43,7 @@ function minimize(lamp) {
     $('#client').hide();
 }
 function setColor(lampId,colorR,colorG,colorB){
+    console.log(lampId);
     var sendString={
         deviceid:lampId,
         animation:"",
@@ -53,14 +54,6 @@ function setColor(lampId,colorR,colorG,colorB){
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
 
 }
-//v 2.0
-$('#sinemSettings').on('click', function() {
-    setColor(1,255,59,33);
-    setColor(2,255,59,33);
-    setColor(3,255,59,33);
-    setColor(4,255,59,33);
-    setColor(5,255,59,33);
-});
 $('#lamp1').on('click',function () {
     $('#client').show();
     $('#desk').hide();
@@ -109,11 +102,11 @@ $('#lamp5').on('click',function () {
 
 function setSinemSettings() {
     console.log("Setting Sinem's Settings");
-    //TV Lamp
+    // //TV Lamp
     setColor(1,255,112,51);
-    //Coffee Lamp
+    // //Coffee Lamp
     setColor(3,255,112,51);
-    //Wall Lamp
+    // //Wall Lamp
     setColor(5,255,84,41);
 }
 
