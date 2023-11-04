@@ -108,11 +108,13 @@ $('#lamp5').on('click',function () {
 });
 
 function setSinemSettings() {
-    setColor(1,255,59,33);
-    setColor(2,255,59,33);
-    setColor(3,255,59,33);
-    setColor(4,255,59,33);
-    setColor(5,255,59,33);
+    console.log("Setting Sinem's Settings");
+    //TV Lamp
+    setColor(1,255,112,51);
+    //Coffee Lamp
+    setColor(3,255,112,51);
+    //Wall Lamp
+    setColor(5,255,84,41);
 }
 
 ws.onopen = function(e) {
