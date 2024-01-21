@@ -104,6 +104,8 @@ function setSinemSettings() {
     console.log("Setting Sinem's Settings");
     // //TV Lamp
     setColor(1,255,112,51);
+    // Plant Lamp
+    setColor(2,85,0,255);
     // //Coffee Lamp
     setColor(3,255,112,51);
     // //Wall Lamp
@@ -115,21 +117,17 @@ ws.onopen = function(e) {
         deviceid:1,
         action:"alliveCheck"
     }
-    // ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    // var sendString = {
-    //     deviceid:2,
-    //     action:"alliveCheck"
-    // }
+    ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
+
+    var sendString = {
+        deviceid:2,
+        action:"alliveCheck"
+    }
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     var sendString = {
         deviceid:3,
         action:"alliveCheck"
     }
-    // ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    // var sendString = {
-    //     deviceid:4,
-    //     action:"alliveCheck"
-    // }
     ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     var sendString = {
         deviceid:5,
