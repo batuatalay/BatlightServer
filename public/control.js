@@ -43,7 +43,6 @@ function minimize(lamp) {
     $('#client').hide();
 }
 function setColor(lampId,colorR,colorG,colorB){
-    console.log(lampId);
     var sendString={
         deviceid:lampId,
         animation:"",
