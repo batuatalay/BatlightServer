@@ -1,6 +1,16 @@
-version: "3.7"
-
 services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "5443:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - ./:/tmp/repo/
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
   batlight:
     container_name: batlight
     image: batuatalay/batlight
@@ -19,7 +29,7 @@ services:
       - batlight
     restart: always
     volumes:
-      - /home/ubuntu/public:/usr/share/nginx/html
+      - ./public:/usr/share/nginx/html
     networks:
       - serverNet
 networks:
