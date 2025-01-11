@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>batlight v3.5</title>
+        <title>batlight v4.0</title>
         <script src="https://cdn.socket.io/4.0.1/socket.io.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -108,12 +108,32 @@
                 </div>
             </div>
             <div class="row" id="client">
+                <div class="device-on col-md-12" id="lambader">
+                    <p class="closeLamp">
+                        <b onclick="minimize();" style="padding: 5px;">-</b>
+                        <b onclick="closeLamp(3);">X</b>
+                    </p>
+                    <center><h2>Working Room</h2></center>
+                    <div class="d-flex justify-content-center" id="picker3">
+                        <div class="wheel" id="colorWheelDemo7"></div>
+                    </div>
+                    <label>Scenario</label>
+                    <select id="scenario3" class="form-control">
+                        <option value="">Select scenario</option>
+                        <option value="twoColor">Two Color</option>
+                        <option value="rainbow">rainbow</option>
+                        <option value="fallin">fallin</option>
+                        <option value="redVibe">redVibe</option>
+                        <option value="partyVibe">partyVibe</option>
+                    </select>
+                    <div id="btnDiv3"></div>
+                </div>
                 <div class="device-on col-md-12" id="desk">
                     <p class="closeLamp">
                         <b onclick="minimize();" style="padding: 5px;">-</b>
                         <b onclick="closeLamp(1);">X</b>
                     </p>
-                    <center><h2>TV Lamp</h2></center>
+                    <center><h2>TV Light</h2></center>
                     <div class="d-flex justify-content-center" id="picker">
                         <div class="wheel" id="colorWheelDemo1"></div>
                     </div>
@@ -136,7 +156,7 @@
                         <b onclick="minimize();" style="padding: 5px;">-</b>
                         <b onclick="closeLamp(2);">X</b>
                     </p>
-                    <center><h2>Plant Lamp</h2></center>
+                    <center><h2>Console Light</h2></center>
                     <div class="d-flex justify-content-center" id="picker2">
                         <div class="wheel" id="colorWheelDemo2"></div>
                     </div>
@@ -155,58 +175,6 @@
                         <option value="redToBlueChange">redToBlueChange</option>-->
                     </select>
                     <div id="btnDiv2"></div>
-                </div>
-                <div class="device-on col-md-12" id="lambader">
-                    <p class="closeLamp">
-                        <b onclick="minimize();" style="padding: 5px;">-</b>
-                        <b onclick="closeLamp(3);">X</b>
-                    </p>
-                    <center><h2>Coffee Lamp</h2></center>
-                    <div class="d-flex justify-content-center" id="picker3">
-                        <div class="wheel" id="colorWheelDemo7"></div>
-                    </div>
-                    <label>Scenario</label>
-                    <select id="scenario3" class="form-control">
-                        <option value="">Select scenario</option>
-                        <option value="twoColor">Two Color</option>
-                        <option value="rainbow">rainbow</option>
-                        <option value="fallin">fallin</option>
-                        <option value="redVibe">redVibe</option>
-                        <option value="partyVibe">partyVibe</option>
-                        <!--<option value="rainbow">rainbow</option>
-                        <option value="change">change</option>
-                        <option value="police">police</option>
-                        <option value="redChange">redChange</option>
-                        <option value="blueChange">blueChange</option>
-                        <option value="redToBlueChange">redToBlueChange</option>-->
-                    </select>
-                    <div id="btnDiv3"></div>
-                </div>
-                <div class="device-on col-md-12" id="portable">
-                    <p class="closeLamp">
-                        <b onclick="minimize();" style="padding: 5px;">-</b>
-                        <b onclick="closeLamp(4);">X</b>
-                    </p>
-                    <center><h2>Partable Lamp</h2></center>
-                    <div class="d-flex justify-content-center" id="picker4">
-                        <div class="wheel" id="colorWheelDemo10"></div>
-                    </div>
-                    <label>Scenario</label>
-                    <select id="scenario4" class="form-control">
-                        <option value="">Select scenario</option>
-                        <option value="twoColor">Two Color</option>
-                        <option value="rainbow">rainbow</option>
-                        <option value="fallin">fallin</option>
-                        <option value="redVibe">redVibe</option>
-                        <option value="partyVibe">partyVibe</option>
-                        <!--<option value="rainbow">rainbow</option>
-                        <option value="change">change</option>
-                        <option value="police">police</option>
-                        <option value="redChange">redChange</option>
-                        <option value="blueChange">blueChange</option>
-                        <option value="redToBlueChange">redToBlueChange</option>-->
-                    </select>
-                    <div id="btnDiv4"></div>
                 </div>
                 <div class="device-on col-md-12" id="wall">
                     <p class="closeLamp">
@@ -250,5 +218,5 @@
     <script src="control.js"></script>
     <script src="colorWheelControl.js"></script>
     <script src="scenarioControl.js"></script>
-    <script src="autoControljs"></script>
+    <script src="autoControl.js"></script>
 </html>

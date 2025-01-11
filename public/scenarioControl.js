@@ -28,28 +28,12 @@ $('#scenario1').on('change',function(){
             ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
         });
     }
-    if(this.value=="rainbow"){
-	var sendString={
-	   deviceid:1,
-	   animation:"rainbow"
-	}
-	ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
-    }
-    if(this.value=="fallin"){
+    else {
         var sendString={
            deviceid:1,
-           animation:"fallin"
-        }
+           animation:this.value
+        } 
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    }
-    if(this.value=="redVibe"){
-        var sendString={
-           deviceid:1,
-           animation:"redVibe"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
     }
 });
 $('#scenario2').on('change',function(){
@@ -83,29 +67,13 @@ $('#scenario2').on('change',function(){
         };
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
     });
-    }
-    if(this.value=="rainbow"){
+    }   
+    else {
         var sendString={
            deviceid:2,
-           animation:"rainbow"
-        }
+           animation:this.value
+        } 
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
-    }
-    if(this.value=="fallin"){
-        var sendString={
-           deviceid:2,
-           animation:"fallin"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    }
-    if(this.value=="redVibe"){
-        var sendString={
-           deviceid:2,
-           animation:"redVibe"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
     }
 });
 $('#scenario3').on('change',function(){
@@ -138,36 +106,12 @@ $('#scenario3').on('change',function(){
             ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
         });
     } 
-    if(this.value=="rainbow"){
+    else {
         var sendString={
            deviceid:3,
-           animation:"rainbow"
-        }
+           animation:this.value
+        } 
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
-    }
-    if(this.value=="fallin"){
-        var sendString={
-           deviceid:3,
-           animation:"fallin"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    }
-    if(this.value=="redVibe"){
-        var sendString={
-           deviceid:3,
-           animation:"redVibe"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
-    }
-    if(this.value=="partyVibe"){
-        var sendString={
-           deviceid:3,
-           animation:"partyVibe"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
     }
 });
 $('#scenario4').on('change',function(){
@@ -200,36 +144,12 @@ $('#scenario4').on('change',function(){
             ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
         });
     } 
-    if(this.value=="rainbow"){
+    else {
         var sendString={
            deviceid:4,
-           animation:"rainbow"
-        }
+           animation:this.value
+        } 
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
-    }
-    if(this.value=="fallin"){
-        var sendString={
-           deviceid:4,
-           animation:"fallin"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    }
-    if(this.value=="redVibe"){
-        var sendString={
-           deviceid:4,
-           animation:"redVibe"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
-    }
-    if(this.value=="partyVibe"){
-        var sendString={
-           deviceid:4,
-           animation:"partyVibe"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
     }
 });
 
@@ -263,35 +183,11 @@ $('#scenario5').on('change',function(){
             ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
         });
     } 
-    if(this.value=="rainbow"){
+    else {
         var sendString={
            deviceid:5,
-           animation:"rainbow"
-        }
+           animation:this.value
+        } 
         ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
-    }
-    if(this.value=="fallin"){
-        var sendString={
-           deviceid:5,
-           animation:"fallin"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-    }
-    if(this.value=="redVibe"){
-        var sendString={
-           deviceid:5,
-           animation:"redVibe"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
-    }
-    if(this.value=="partyVibe"){
-        var sendString={
-           deviceid:5,
-           animation:"partyVibe"
-        }
-        ws.send("{\"message\":"+JSON.stringify(sendString)+"}");
-
     }
 });
