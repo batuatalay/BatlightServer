@@ -1,221 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>batlight v4.0</title>
-        <script src="https://cdn.socket.io/4.0.1/socket.io.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
-        <style>
+<head>
+    <meta charset="UTF-8">
+    <title>batlight v4.0</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
+    <style>
+        /* CSS kodları aynı kalabilir */
         .text{
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-        font-size: 6rem;
-        font-weight:  100;
-        letter-spacing: 2px;
-        text-align: center;
-        color: #f35626;
-        background-image: -webkit-linear-gradient(92deg, #f65a00, #ff0000);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        -webkit-animation: hue 10s infinite linear;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 6rem;
+            font-weight: 100;
+            letter-spacing: 2px;
+            text-align: center;
+            color: #f35626;
+            background-image: -webkit-linear-gradient(92deg, #f65a00, #ff0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-animation: hue 10s infinite linear;
         }
         @-webkit-keyframes hue {
-        from {
-        -webkit-filter: hue-rotate(0deg);
-        }
-        to {
-        -webkit-filter: hue-rotate(-360deg);
-        }
+            from { -webkit-filter: hue-rotate(0deg); }
+            to { -webkit-filter: hue-rotate(-360deg); }
         }
         body {
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 200% 200%;
-        animation: gradient 15s ease infinite;
-        height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 200% 200%;
+            animation: gradient 15s ease infinite;
+            height: 100vh;
         }
         @keyframes gradient {
-        0% {
-        background-position: 0% 50%;
-        }
-        50% {
-        background-position: 100% 50%;
-        }
-        100% {
-        background-position: 0% 50%;
-        }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         .IroSlider{
-        display: none !important;
+            display: none !important;
         }
         .device-on{
-        background-color: #e6e7ff;
-        box-shadow: 0px 0px 25px black;
-        border-radius: 10px;
-        margin: 10px;
+            background-color: #e6e7ff;
+            box-shadow: 0px 0px 25px black;
+            border-radius: 10px;
+            margin: 10px;
         }
         .closeLamp{
-        cursor:pointer;
+            cursor:pointer;
         }
         .close{
-        color:white;
-        background-color:black;
+            color:white;
+            background-color:black;
         }
         .card{
-        margin-left: 25px;
-        margin-top: 15px;
+            margin-left: 25px;
+            margin-top: 15px;
         }
         #lamp1, #lamp2, #lamp3, #lamp4, #lamp5, #SSCAButton{
             cursor: pointer;
             box-shadow: 0px 0px 25px #000;
             border-radius: 25px;
         }
-        </style>
-    </head>
-    <body>
-        <center class="text"><h1>BatLight Control Panel</h1></center>
-        <div class="container">
-            <center id="sinemSettings">
-                <h5 id="SSCAButton" onclick="setSinemSettings()" class="card">Set Sinem's settings to lamp</h5>
-            </center>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="card" id="lamp3" style="width: 14rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Batu's Desk</h5>
-                        <h6 class="card-subtitle mb-2 text-muted" id="lambader3"></h6>
-                    </div>
-                </div>
-                <div class="card" id="lamp2" style="width: 14rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Sinem's Desk</h5>
-                        <h6 class="card-subtitle mb-2 text-muted" id="lambader2"></h6>
-                    </div>
-                </div>
-                <div class="card" id="lamp1" style="width: 14rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">TV light</h5>
-                        <h6 class="card-subtitle mb-2 text-muted" id="lambader1"></h6>
-                    </div>
+    </style>
+</head>
+<body>
+    <center class="text"><h1>BatLight Control Panel</h1></center>
+    <div class="container">
+        <center id="sinemSettings">
+            <h5 id="SSCAButton" onclick="setSinemSettings()" class="card">Set Sinem's settings to lamp</h5>
+        </center>
+    </div>
+    <div class="container">
+        <div class="row">
+            <!-- Batu'nun Kartı -->
+            <div class="card" id="lamp3" style="width: 14rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Batu's Desk</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" id="status-lamp3"></h6>
                 </div>
             </div>
-            <div class="row" id="client">
-                <div class="device-on col-md-12" id="lambader">
-                    <p class="closeLamp">
-                        <b onclick="minimize();" style="padding: 5px;">-</b>
-                        <b onclick="closeLamp(3);">X</b>
-                    </p>
-                    <center><h2>Batu's Desk</h2></center>
-                    <div class="d-flex justify-content-center" id="picker3">
-                        <div class="wheel" id="colorWheelDemo7"></div>
-                    </div>
-                    <label>Scenario</label>
-                    <select id="scenario3" class="form-control">
-                        <option value="">Select scenario</option>
-                        <option value="twoColor">Two Color</option>
-                        <option value="rainbow">rainbow</option>
-                        <option value="fallin">fallin</option>
-                        <option value="redVibe">redVibe</option>
-                        <option value="partyVibe">partyVibe</option>
-                    </select>
-                    <div id="btnDiv3"></div>
+            <!-- Sinem'in Kartı -->
+            <div class="card" id="lamp2" style="width: 14rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Sinem's Desk</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" id="status-lamp2"></h6>
                 </div>
-                <div class="device-on col-md-12" id="sinem">
-                    <p class="closeLamp">
-                        <b onclick="minimize();" style="padding: 5px;">-</b>
-                        <b onclick="closeLamp(2);">X</b>
-                    </p>
-                    <center><h2>Sinem's Desk</h2></center>
-                    <div class="d-flex justify-content-center" id="picker2">
-                        <div class="wheel" id="colorWheelDemo2"></div>
-                    </div>
-                    <label>Scenario</label>
-                    <select id="scenario2" class="form-control">
-                        <option value="">Select scenario</option>
-                        <option value="twoColor">Two Color</option>
-                        <option value="rainbow">rainbow</option>
-                        <option value="fallin">fallin</option>
-                        <option value="redVibe">redVibe</option>
-                        <option value="partyVibe">partyVibe</option>
-                    </select>
-                    <div id="btnDiv3"></div>
+            </div>
+            <!-- TV Kartı -->
+            <div class="card" id="lamp1" style="width: 14rem;">
+                <div class="card-body">
+                    <h5 class="card-title">TV Light</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" id="status-lamp1"></h6>
                 </div>
-
-                <div class="device-on col-md-12" id="desk">
-                    <p class="closeLamp">
-                        <b onclick="minimize();" style="padding: 5px;">-</b>
-                        <b onclick="closeLamp(1);">X</b>
-                    </p>
-                    <center><h2>TV Light</h2></center>
-                    <div class="d-flex justify-content-center" id="picker">
-                        <div class="wheel" id="colorWheelDemo1"></div>
-                    </div>
-                    <label>Scenario</label>
-                    <select id="scenario1" class="form-control">
-                        <option value="">Select scenario</option>
-                        <option value="twoColor">Two Color</option>
-                        <option value="rainbow">rainbow</option>
-                        <option value="fallin">fallin</option>
-                        <option value="redVibe">redVibe</option>
-                    </select>
-                    <div id="btnDiv1"></div>
-                </div>
-<!--                 <div class="device-on col-md-12" id="plant">
-                    <p class="closeLamp">
-                        <b onclick="minimize();" style="padding: 5px;">-</b>
-                        <b onclick="closeLamp(2);">X</b>
-                    </p>
-                    <center><h2>Console Light</h2></center>
-                    <div class="d-flex justify-content-center" id="picker2">
-                        <div class="wheel" id="colorWheelDemo2"></div>
-                    </div>
-                    <label>Scenario</label>
-                    <select id="scenario2" class="form-control">
-                        <option value="">Select scenario</option>
-                        <option value="twoColor">Two Color</option>
-                        <option value="rainbow">rainbow</option>
-                        <option value="fallin">fallin</option>
-                        <option value="redVibe">redVibe</option>
-                    </select>
-                    <div id="btnDiv2"></div>
-                </div> -->
-<!--                 <div class="device-on col-md-12" id="wall">
-                    <p class="closeLamp">
-                        <b onclick="minimize();" style="padding: 5px;">-</b>
-                        <b onclick="closeLamp(5);">X</b>
-                    </p>
-                    <center><h2>Cartıllı's Lamp</h2></center>
-                    <div class="d-flex justify-content-center" id="picker4">
-                        <div class="wheel" id="colorWheelDemo13"></div>
-                    </div>
-                    <label>Scenario</label>
-                    <select id="scenario5" class="form-control">
-                        <option value="">Select scenario</option>
-                        <option value="twoColor">Two Color</option>
-                        <option value="rainbow">rainbow</option>
-                        <option value="fallin">fallin</option>
-                        <option value="redVibe">redVibe</option>
-                        <option value="partyVibe">partyVibe</option>
-                    </select>
-                    <div id="btnDiv5"></div>
-                </div> -->
             </div>
         </div>
-    </body>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <div class="row" id="client">
+            <!-- Batu'nun Paneli -->
+            <div class="device-on col-md-12" id="panel-lamp3">
+                <p class="closeLamp">
+                    <b onclick="minimize();" style="padding: 5px;">-</b>
+                    <b onclick="closeLamp(3);">X</b>
+                </p>
+                <center><h2>Batu's Desk</h2></center>
+                <div class="d-flex justify-content-center" id="picker3">
+                    <div class="wheel" id="colorWheel3"></div>
+                </div>
+                <label>Scenario</label>
+                <select id="scenario3" class="form-control">
+                    <option value="">Select scenario</option>
+                    <option value="twoColor">Two Color</option>
+                    <option value="rainbow">Rainbow</option>
+                    <option value="fallin">Fallin</option>
+                    <option value="redVibe">Red Vibe</option>
+                    <option value="partyVibe">Party Vibe</option>
+                </select>
+                <div id="btnDiv3"></div>
+            </div>
+            <!-- Sinem'in Paneli -->
+            <div class="device-on col-md-12" id="panel-lamp2">
+                <p class="closeLamp">
+                    <b onclick="minimize();" style="padding: 5px;">-</b>
+                    <b onclick="closeLamp(2);">X</b>
+                </p>
+                <center><h2>Sinem's Desk</h2></center>
+                <div class="d-flex justify-content-center" id="picker2">
+                    <div class="wheel" id="colorWheel2"></div>
+                </div>
+                <label>Scenario</label>
+                <select id="scenario2" class="form-control">
+                    <option value="">Select scenario</option>
+                    <option value="twoColor">Two Color</option>
+                    <option value="rainbow">Rainbow</option>
+                    <option value="fallin">Fallin</option>
+                    <option value="redVibe">Red Vibe</option>
+                    <option value="partyVibe">Party Vibe</option>
+                </select>
+                <div id="btnDiv2"></div>
+            </div>
+            <!-- TV Paneli -->
+            <div class="device-on col-md-12" id="panel-lamp1">
+                <p class="closeLamp">
+                    <b onclick="minimize();" style="padding: 5px;">-</b>
+                    <b onclick="closeLamp(1);">X</b>
+                </p>
+                <center><h2>TV Light</h2></center>
+                <div class="d-flex justify-content-center" id="picker1">
+                    <div class="wheel" id="colorWheel1"></div>
+                </div>
+                <label>Scenario</label>
+                <select id="scenario1" class="form-control">
+                    <option value="">Select scenario</option>
+                    <option value="twoColor">Two Color</option>
+                    <option value="rainbow">Rainbow</option>
+                    <option value="fallin">Fallin</option>
+                    <option value="redVibe">Red Vibe</option>
+                </select>
+                <div id="btnDiv1"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
-
-    let ws = new WebSocket("ws://35.188.173.59:3000/");
-    var colorWheel1 = new iro.ColorPicker("#colorWheelDemo1");
-    var colorWheel2 = new iro.ColorPicker("#colorWheelDemo2");
-    var colorWheel7 = new iro.ColorPicker("#colorWheelDemo7");
-    var colorWheel10 = new iro.ColorPicker("#colorWheelDemo10");
-    var colorWheel13 = new iro.ColorPicker("#colorWheelDemo13");
+        let ws = new WebSocket("ws://35.188.173.59:3000/");
     </script>
-    <script src="control.js"></script>
-    <script src="colorWheelControl.js"></script>
-    <script src="scenarioControl.js"></script>
-    <script src="autoControl.js"></script>
+    <script src="app.js"></script>
+</body>
 </html>
