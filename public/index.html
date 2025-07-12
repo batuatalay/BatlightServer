@@ -160,10 +160,29 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript">
-        let ws = new WebSocket("ws://35.188.173.59:3000/");
-    </script>
-    <script src="app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    // ❌ Eski kod:
+    // let ws = new WebSocket("ws://35.188.173.59:3000/");
+    
+    // ✅ Yeni kod - server.batproduct.com subdomain üzerinden:
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const apiDomain = window.location.hostname === 'batproduct.com' ? 'server.batproduct.com' : window.location.host;
+    let ws = new WebSocket(protocol + '//' + apiDomain + '/');
+    
+    // WebSocket bağlantı durumunu kontrol edin
+    ws.onopen = function(event) {
+        console.log('WebSocket bağlantısı kuruldu:', event);
+    };
+    
+    ws.onerror = function(error) {
+        console.error('WebSocket hatası:', error);
+    };
+    
+    ws.onclose = function(event) {
+        console.log('WebSocket bağlantısı kapandı:', event);
+    };
+</script>
+<script src="app.js"></script>
 </body>
 </html>
