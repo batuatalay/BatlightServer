@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   # Nginx Proxy Manager - Doğru port konfigürasyonu
   nginx-proxy-manager:
@@ -53,39 +52,41 @@ services:
       timeout: 10s
       retries: 5
 
-  # BatLight uygulaması - Local build
-batlight:
+  # BatLight uygulaması - Network düzeltildi
+  batlight:
     container_name: batlight
     image: batuatalay/batlight
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
+    # Port'u sadece internal kullanım için kapatıldı
+    # ports:
+    #   - "3000:3000"
     networks:
-      - serverNet
+      - batlight-network  # ✅ serverNet yerine batlight-network
     restart: always
 
-nginx:
-  container_name: nginx-static
-  image: nginx:alpine
-  expose:
-    - "80"
-  volumes:
-    - ./public:/usr/share/nginx/html:ro
-  networks:
-    - batlight-network
-  restart: unless-stopped
-  depends_on:
-    - batlight
-  healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost"]
-    interval: 30s
-    timeout: 10s
-    retries: 3
+  nginx:
+    container_name: nginx-static
+    image: nginx:alpine
+    expose:
+      - "80"
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+    networks:
+      - batlight-network
+    restart: unless-stopped
+    depends_on:
+      - batlight
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   # Jenkins - Sadece internal network'te
   jenkins:
     container_name: jenkins-ci
     image: jenkins/jenkins:lts-alpine
-    # ❌ Port 8080'i dışarı açma - sadece internal
     expose:
       - "8080"
     ports:
@@ -122,6 +123,7 @@ volumes:
 networks:
   npm-network:
     driver: bridge
+    internal: true  # NPM ve DB arası iletişim için
   batlight-network:
     driver: bridge
     ipam:
