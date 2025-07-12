@@ -53,11 +53,10 @@ services:
       timeout: 10s
       retries: 5
 
-  # BatLight uygulaması - Sadece internal network'te
+  # BatLight uygulaması - Local build
   batlight:
     container_name: batlight
-    image: batuatalay/batlight:latest
-    # ❌ Port 3000'i dışarı açma - sadece internal
+    build: .
     expose:
       - "3000"
     environment:
