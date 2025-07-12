@@ -1,15 +1,18 @@
 version: '3.8'
 
 services:
+  # Nginx Proxy Manager - Admin paneli internal'a alınacak
   nginx-proxy-manager:
     image: 'jc21/nginx-proxy-manager:latest'
     container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
+      # Public HTTP Port:
       - '80:80'
+      # Public HTTPS Port:
       - '443:443'
-    expose:
-      - '81'
+      # Admin Web Port: (gerekli - NPM API için)
+      - '81:81'
     environment:
       DB_MYSQL_HOST: "npm-db"
       DB_MYSQL_PORT: 3306
@@ -30,6 +33,7 @@ services:
       timeout: 10s
       retries: 3
 
+  # MySQL database for Nginx Proxy Manager
   npm-db:
     image: 'jc21/mariadb-aria:latest'
     container_name: nginx-proxy-manager-db
@@ -49,6 +53,7 @@ services:
       timeout: 10s
       retries: 5
 
+  # Ana BatLight uygulaması
   batlight:
     container_name: batlight
     image: batuatalay/batlight:latest
@@ -79,6 +84,7 @@ services:
           cpus: '0.25'
           memory: 256M
 
+  # Jenkins CI/CD
   jenkins:
     container_name: jenkins-ci
     image: jenkins/jenkins:lts-alpine
@@ -102,6 +108,7 @@ services:
       retries: 3
       start_period: 60s
 
+# Named volumes
 volumes:
   npm_data:
     driver: local
@@ -112,6 +119,7 @@ volumes:
   jenkins_home:
     driver: local
 
+# Networks
 networks:
   npm-network:
     driver: bridge
