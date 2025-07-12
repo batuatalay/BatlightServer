@@ -64,8 +64,7 @@ services:
       - PORT=3000
       - WS_PORT=3000
     volumes:
-      - ./logs:/app/logs
-      - ./public:/app/public
+      - ./public:/usr/share/nginx/html
     networks:
       - batlight-network
     restart: unless-stopped
