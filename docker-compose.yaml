@@ -8,7 +8,8 @@ services:
     ports:
       - '80:80'
       - '443:443'
-      - '81:81'
+    expose:
+      - '81'
     environment:
       DB_MYSQL_HOST: "npm-db"
       DB_MYSQL_PORT: 3306
@@ -84,7 +85,7 @@ services:
     expose:
       - "8080"
     ports:
-      - "50000:50000"  # Agent port
+      - "50000:50000"
     environment:
       - JENKINS_OPTS=--httpPort=8080
       - JAVA_OPTS=-Xmx512m -Djava.awt.headless=true
