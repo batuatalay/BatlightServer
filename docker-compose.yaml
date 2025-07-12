@@ -54,31 +54,32 @@ services:
       retries: 5
 
   # BatLight uygulaması - Local build
-  batlight:
+batlight:
     container_name: batlight
-    build: .
-    expose:
-      - "3000"
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - WS_PORT=3000
-    volumes:
-      - ./public:/usr/share/nginx/html
+    image: batuatalay/batlight
+    ports:
+      - "3000:3000"
     networks:
-      - batlight-network
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
+      - serverNet
+    restart: always
+
+nginx:
+  container_name: nginx-static
+  image: nginx:alpine
+  expose:
+    - "80"
+  volumes:
+    - ./public:/usr/share/nginx/html:ro
+  networks:
+    - batlight-network
+  restart: unless-stopped
+  depends_on:
+    - batlight
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
 
   # Jenkins - Sadece internal network'te
   jenkins:
