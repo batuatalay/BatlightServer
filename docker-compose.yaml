@@ -1,38 +1,122 @@
+version: '3.8'
+
 services:
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
     ports:
-      - "85:8080"
-      - "50000:50000"
+      - '80:80'
+      - '443:443'
+      - '81:81'
+    environment:
+      DB_MYSQL_HOST: "npm-db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD: "npm_password_2024"
+      DB_MYSQL_NAME: "npm"
     volumes:
-      - ./jenkins_home:/var/jenkins_home
-      - ./:/tmp/repo/
-    restart: always
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    depends_on:
+      - npm-db
+    networks:
+      - npm-network
+      - batlight-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:81"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  npm-db:
+    image: 'jc21/mariadb-aria:latest'
+    container_name: nginx-proxy-manager-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm_root_password_2024'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm_password_2024'
+    volumes:
+      - npm_db_data:/var/lib/mysql
+    networks:
+      - npm-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   batlight:
     container_name: batlight
-    image: batuatalay/batlight
-    ports:
-      - "3000:3000"
-    networks:
-      - serverNet
-    restart: always
-
-  nginx:
-    container_name: nginx
-    image: nginx
-    ports:
-      - "80:80"
-    depends_on:
-      - batlight
-    restart: always
+    image: batuatalay/batlight:latest
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - WS_PORT=3000
     volumes:
-      - ./public:/usr/share/nginx/html
+      - ./logs:/app/logs
+      - ./public:/app/public
     networks:
-      - serverNet
+      - batlight-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  jenkins:
+    container_name: jenkins-ci
+    image: jenkins/jenkins:lts-alpine
+    expose:
+      - "8080"
+    ports:
+      - "50000:50000"
+    environment:
+      - JENKINS_OPTS="--httpPort=8080"
+      - JAVA_OPTS="-Xmx1024m -Djava.awt.headless=true"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - batlight-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/login"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  npm_data:
+    driver: local
+  npm_letsencrypt:
+    driver: local
+  npm_db_data:
+    driver: local
+  jenkins_home:
+    driver: local
+
 networks:
-  serverNet:
+  npm-network:
     driver: bridge
-
-
+  batlight-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
