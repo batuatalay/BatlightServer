@@ -1,17 +1,17 @@
 version: '3.8'
 
 services:
-  # Nginx Proxy Manager - Admin paneli internal'a alınacak
+  # Nginx Proxy Manager - Doğru port konfigürasyonu
   nginx-proxy-manager:
     image: 'jc21/nginx-proxy-manager:latest'
     container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
-      # Public HTTP Port:
+      # ✅ HTTP trafiği (80) NPM'e yönlendir
       - '80:80'
-      # Public HTTPS Port:
+      # ✅ HTTPS trafiği (443) NPM'e yönlendir  
       - '443:443'
-      # Admin Web Port: (gerekli - NPM API için)
+      # ✅ Admin paneli (81) - dışarı aç
       - '81:81'
     environment:
       DB_MYSQL_HOST: "npm-db"
@@ -53,10 +53,11 @@ services:
       timeout: 10s
       retries: 5
 
-  # Ana BatLight uygulaması
+  # BatLight uygulaması - Sadece internal network'te
   batlight:
     container_name: batlight
     image: batuatalay/batlight:latest
+    # ❌ Port 3000'i dışarı açma - sadece internal
     expose:
       - "3000"
     environment:
@@ -80,17 +81,16 @@ services:
         limits:
           cpus: '0.5'
           memory: 512M
-        reservations:
-          cpus: '0.25'
-          memory: 256M
 
-  # Jenkins CI/CD
+  # Jenkins - Sadece internal network'te
   jenkins:
     container_name: jenkins-ci
     image: jenkins/jenkins:lts-alpine
+    # ❌ Port 8080'i dışarı açma - sadece internal
     expose:
       - "8080"
     ports:
+      # Agent port'u dışarı açık bırak (gerekli)
       - "50000:50000"
     environment:
       - JENKINS_OPTS=--httpPort=8080
