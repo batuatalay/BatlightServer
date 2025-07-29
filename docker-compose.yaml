@@ -3,7 +3,6 @@ services:
   batlight:
     container_name: batlight
     build: .
-    working_dir: /app
     ports:
       - "80:3000"
       - "3000:3000"

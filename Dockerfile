@@ -1,2 +1,2 @@
 FROM batuatalay/batlight:latest
-COPY ./public /app/public
+COPY ./public /batlight/public
