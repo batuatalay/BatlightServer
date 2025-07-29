@@ -108,6 +108,7 @@ function setupWebSocket() {
     // Mesaj alındığında
     ws.onmessage = function({ data }) {
         var response = JSON.parse(data);
+        console.log(response);
         if(response.action == "allive") {
             $('#status-lamp' + response.deviceid).html('Status: <span style="color:green">Active</span>');
         }
