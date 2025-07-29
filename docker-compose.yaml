@@ -3,6 +3,8 @@ services:
   batlight:
     container_name: batlight
     image: batuatalay/batlight
+    volumes:
+      - ./public:/app/public
     ports:
       - "3000:3000"
     networks:
