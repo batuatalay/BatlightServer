@@ -2,8 +2,26 @@ version: '3.8'
 services:
   batlight:
     container_name: batlight
-    build: .
+    image: batuatalay/batlight
     ports:
-      - "80:3000"
       - "3000:3000"
+    networks:
+      - serverNet
     restart: always
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - batlight
+    restart: always
+    volumes:
+      - ./public:/usr/share/nginx/html  # Güncel dosyalarınız
+    networks:
+      - serverNet
+
+networks:
+  serverNet:
+    driver: bridge
