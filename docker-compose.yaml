@@ -1,28 +1,41 @@
 version: '3.8'
 services:
+
   batlight:
     container_name: batlight
     image: batuatalay/batlight
-    expose:
-      - "3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./public/index.html:/app/public/index.html
     networks:
-      - serverNet
+      - batlight-network
     restart: always
 
   nginx:
     container_name: nginx
-    image: nginx
+    image: nginx:alpine
     ports:
       - "80:80"
-    depends_on:
-      - batlight
-    restart: always
     volumes:
       - ./public:/usr/share/nginx/html
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     networks:
-      - serverNet
+      - batlight-network
+    restart: unless-stopped
+    depends_on:
+      - batlight
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
+
+# Networks
 networks:
-  serverNet:
+  batlight-network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16

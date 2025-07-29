@@ -162,7 +162,7 @@
     </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-    let ws = new WebSocket(`wss://${window.location.host}/ws`);
+    let ws = new WebSocket("ws://35.188.173.59:3000/");
     
     ws.onopen = function(event) {
         console.log('WebSocket bağlantısı kuruldu:', event);
