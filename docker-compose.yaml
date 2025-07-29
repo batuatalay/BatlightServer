@@ -3,8 +3,8 @@ services:
   batlight:
     container_name: batlight
     image: batuatalay/batlight
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"  # Sadece internal
     networks:
       - serverNet
     restart: always
@@ -18,7 +18,8 @@ services:
       - batlight
     restart: always
     volumes:
-      - ./public:/usr/share/nginx/html  # Güncel dosyalarınız
+      - ./public:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Custom config
     networks:
       - serverNet
 
