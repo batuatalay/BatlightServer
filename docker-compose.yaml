@@ -32,7 +32,7 @@ services:
       timeout: 10s
       retries: 3
 
-  MySQL database for Nginx Proxy Manager
+  # MySQL database for Nginx Proxy Manager
   npm-db:
     image: 'jc21/mariadb-aria:latest'
     container_name: nginx-proxy-manager-db
