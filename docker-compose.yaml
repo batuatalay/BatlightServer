@@ -1,36 +1,36 @@
 version: '3.8'
 services:
   # Nginx Proxy Manager - Doğru port konfigürasyonu
-  # nginx-proxy-manager:
-  #   image: 'jc21/nginx-proxy-manager:latest'
-  #   container_name: nginx-proxy-manager
-  #   restart: unless-stopped
-  #   ports:
-  #     # ✅ HTTP trafiği (80) NPM'e yönlendir
-  #     - '80:80'
-  #     # ✅ HTTPS trafiği (443) NPM'e yönlendir  
-  #     - '443:443'
-  #     # ✅ Admin paneli (81) - dışarı aç
-  #     - '81:81'
-  #   environment:
-  #     DB_MYSQL_HOST: "npm-db"
-  #     DB_MYSQL_PORT: 3306
-  #     DB_MYSQL_USER: "npm"
-  #     DB_MYSQL_PASSWORD: "npm_password_2024"
-  #     DB_MYSQL_NAME: "npm"
-  #   volumes:
-  #     - npm_data:/data
-  #     - npm_letsencrypt:/etc/letsencrypt
-  #   depends_on:
-  #     - npm-db
-  #   networks:
-  #     - npm-network
-  #     - batlight-network
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost:81"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      # ✅ HTTP trafiği (80) NPM'e yönlendir
+      - '80:80'
+      # ✅ HTTPS trafiği (443) NPM'e yönlendir  
+      - '443:443'
+      # ✅ Admin paneli (81) - dışarı aç
+      - '81:81'
+    environment:
+      DB_MYSQL_HOST: "npm-db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD: "npm_password_2024"
+      DB_MYSQL_NAME: "npm"
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    # depends_on:
+    #   - npm-db
+    networks:
+      - npm-network
+      - batlight-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:81"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   # MySQL database for Nginx Proxy Manager
   # npm-db:
