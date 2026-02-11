@@ -1002,10 +1002,7 @@
 
         // Initialize WebSocket
         function initWebSocket() {
-            const wsUrl = `${protocol}//${apiDomain}/`;
-
-            console.log(wsUrl);
-            ws = new WebSocket(wsUrl);
+            ws = new WebSocket(protocol + '//' + apiDomain + '/');
 
             ws.onopen = function() {
                 console.log('WebSocket connected');
