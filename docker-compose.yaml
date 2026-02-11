@@ -1,66 +1,68 @@
 version: '3.8'
 services:
   # Nginx Proxy Manager - Doğru port konfigürasyonu
-  nginx-proxy-manager:
-    image: 'jc21/nginx-proxy-manager:latest'
-    container_name: nginx-proxy-manager
-    restart: unless-stopped
-    ports:
-      # ✅ HTTP trafiği (80) NPM'e yönlendir
-      - '80:80'
-      # ✅ HTTPS trafiği (443) NPM'e yönlendir  
-      - '443:443'
-      # ✅ Admin paneli (81) - dışarı aç
-      - '81:81'
-    environment:
-      DB_MYSQL_HOST: "npm-db"
-      DB_MYSQL_PORT: 3306
-      DB_MYSQL_USER: "npm"
-      DB_MYSQL_PASSWORD: "npm_password_2024"
-      DB_MYSQL_NAME: "npm"
-    volumes:
-      - npm_data:/data
-      - npm_letsencrypt:/etc/letsencrypt
-    depends_on:
-      - npm-db
-    networks:
-      - npm-network
-      - batlight-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:81"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+  # nginx-proxy-manager:
+  #   image: 'jc21/nginx-proxy-manager:latest'
+  #   container_name: nginx-proxy-manager
+  #   restart: unless-stopped
+  #   ports:
+  #     # ✅ HTTP trafiği (80) NPM'e yönlendir
+  #     - '80:80'
+  #     # ✅ HTTPS trafiği (443) NPM'e yönlendir  
+  #     - '443:443'
+  #     # ✅ Admin paneli (81) - dışarı aç
+  #     - '81:81'
+  #   environment:
+  #     DB_MYSQL_HOST: "npm-db"
+  #     DB_MYSQL_PORT: 3306
+  #     DB_MYSQL_USER: "npm"
+  #     DB_MYSQL_PASSWORD: "npm_password_2024"
+  #     DB_MYSQL_NAME: "npm"
+  #   volumes:
+  #     - npm_data:/data
+  #     - npm_letsencrypt:/etc/letsencrypt
+  #   depends_on:
+  #     - npm-db
+  #   networks:
+  #     - npm-network
+  #     - batlight-network
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:81"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
 
   # MySQL database for Nginx Proxy Manager
-  npm-db:
-    image: 'jc21/mariadb-aria:latest'
-    container_name: nginx-proxy-manager-db
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: 'npm_root_password_2024'
-      MYSQL_DATABASE: 'npm'
-      MYSQL_USER: 'npm'
-      MYSQL_PASSWORD: 'npm_password_2024'
-    volumes:
-      - npm_db_data:/var/lib/mysql
-    networks:
-      - npm-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+  # npm-db:
+  #   image: 'jc21/mariadb-aria:latest'
+  #   container_name: nginx-proxy-manager-db
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 'npm_root_password_2024'
+  #     MYSQL_DATABASE: 'npm'
+  #     MYSQL_USER: 'npm'
+  #     MYSQL_PASSWORD: 'npm_password_2024'
+  #   volumes:
+  #     - npm_db_data:/var/lib/mysql
+  #   networks:
+  #     - npm-network
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
 
   # BatLight uygulaması - Network düzeltildi
   batlight:
     container_name: batlight
     image: batuatalay/batlight
-    expose:
-      - "3000"
+    # expose:
+    #   - "3000"
     # Port'u sadece internal kullanım için kapatıldı
-    # ports:
-    #   - "3000:3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./public/index.html:/app/public/index.html:ro
     networks:
       - batlight-network  # ✅ serverNet yerine batlight-network
     restart: always
@@ -84,29 +86,29 @@ services:
       retries: 3
 
   # Jenkins - Sadece internal network'te
-  jenkins:
-    container_name: jenkins-ci
-    image: jenkins/jenkins:lts-alpine
-    expose:
-      - "8080"
-    ports:
-      # Agent port'u dışarı açık bırak (gerekli)
-      - "50000:50000"
-    environment:
-      - JENKINS_OPTS=--httpPort=8080
-      - JAVA_OPTS=-Xmx512m -Djava.awt.headless=true
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - batlight-network
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/login"]
-      interval: 60s
-      timeout: 30s
-      retries: 3
-      start_period: 60s
+  # jenkins:
+  #   container_name: jenkins-ci
+  #   image: jenkins/jenkins:lts-alpine
+  #   expose:
+  #     - "8080"
+  #   ports:
+  #     # Agent port'u dışarı açık bırak (gerekli)
+  #     - "50000:50000"
+  #   environment:
+  #     - JENKINS_OPTS=--httpPort=8080
+  #     - JAVA_OPTS=-Xmx512m -Djava.awt.headless=true
+  #   volumes:
+  #     - jenkins_home:/var/jenkins_home
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #   networks:
+  #     - batlight-network
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080/login"]
+  #     interval: 60s
+  #     timeout: 30s
+  #     retries: 3
+  #     start_period: 60s
 
 # Named volumes
 volumes:
