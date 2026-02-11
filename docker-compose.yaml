@@ -32,25 +32,25 @@ services:
       timeout: 10s
       retries: 3
 
-  # MySQL database for Nginx Proxy Manager
-  # npm-db:
-  #   image: 'jc21/mariadb-aria:latest'
-  #   container_name: nginx-proxy-manager-db
-  #   restart: unless-stopped
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: 'npm_root_password_2024'
-  #     MYSQL_DATABASE: 'npm'
-  #     MYSQL_USER: 'npm'
-  #     MYSQL_PASSWORD: 'npm_password_2024'
-  #   volumes:
-  #     - npm_db_data:/var/lib/mysql
-  #   networks:
-  #     - npm-network
-  #   healthcheck:
-  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 5
+  MySQL database for Nginx Proxy Manager
+  npm-db:
+    image: 'jc21/mariadb-aria:latest'
+    container_name: nginx-proxy-manager-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm_root_password_2024'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm_password_2024'
+    volumes:
+      - npm_db_data:/var/lib/mysql
+    networks:
+      - npm-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   # BatLight uygulaması - Network düzeltildi
   batlight:
