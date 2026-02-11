@@ -991,15 +991,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // WebSocket Connection
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        let apiDomain;
-        if (window.location.hostname === 'batproduct.com') {
-            apiDomain = '35.188.173.59:3000';
-        } else if (window.location.host) {
-            apiDomain = window.location.host;
-        } else {
-            apiDomain = '35.188.173.59:3000';
-        }
+        const protocol = 'ws';
+        let apiDomain = '35.188.173.59:3000';
 
         let ws;
         let currentLampId = null;
