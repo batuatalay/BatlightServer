@@ -991,9 +991,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // WebSocket Connection
-        const protocol = 'ws';
-        let apiDomain = '35.188.173.59:3000';
-
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const apiDomain = '35.188.173.59:3000';
         let ws;
         let currentLampId = null;
         let colorPicker = null;
@@ -1003,7 +1002,10 @@
 
         // Initialize WebSocket
         function initWebSocket() {
-            ws = new WebSocket(protocol + '//' + apiDomain + '/');
+            const wsUrl = `${protocol}//${apiDomain}/`;
+
+            console.log(wsUrl);
+            ws = new WebSocket(wsUrl);
 
             ws.onopen = function() {
                 console.log('WebSocket connected');
