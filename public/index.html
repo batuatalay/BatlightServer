@@ -2,187 +2,1331 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>batlight v4.0</title>
-    <script src="https://cdn.socket.io/4.0.1/socket.io.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BatLight Control Panel v5.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS kodları aynı kalabilir */
-        .text{
-            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-            font-size: 6rem;
-            font-weight: 100;
-            letter-spacing: 2px;
-            text-align: center;
-            color: #f35626;
-            background-image: -webkit-linear-gradient(92deg, #f65a00, #ff0000);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-hover: #1f3460;
+            --accent-primary: #e94560;
+            --accent-secondary: #0f3460;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --success: #00d26a;
+            --warning: #ffc107;
+            --danger: #ff4757;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.03) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(25%, 25%) scale(1.2); }
+        }
+
+        /* Header */
+        .header {
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), #ff6b6b);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #a0a0b0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            -webkit-animation: hue 10s infinite linear;
         }
-        @-webkit-keyframes hue {
-            from { -webkit-filter: hue-rotate(0deg); }
-            to { -webkit-filter: hue-rotate(-360deg); }
+
+        .logo-text span {
+            font-size: 12px;
+            color: var(--text-secondary);
         }
-        body {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 200% 200%;
-            animation: gradient 15s ease infinite;
-            height: 100vh;
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
         }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .IroSlider{
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), #ff6b6b);
+            color: white;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Lamp Grid */
+        .lamp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .lamp-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lamp-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), #ff6b6b);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .lamp-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(233, 69, 96, 0.3);
+        }
+
+        .lamp-card:hover::before {
+            opacity: 1;
+        }
+
+        .lamp-card.active {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.2);
+        }
+
+        .lamp-card.active::before {
+            opacity: 1;
+        }
+
+        .lamp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .lamp-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .lamp-info span {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .lamp-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(0, 210, 106, 0.1);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--success);
+        }
+
+        .lamp-status.offline {
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--danger);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: blink 2s infinite;
+        }
+
+        .lamp-status.offline .status-dot {
+            background: var(--danger);
+            animation: none;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .lamp-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-hover));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            font-size: 32px;
+            position: relative;
+        }
+
+        .lamp-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            filter: blur(20px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .lamp-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .lamp-footer span {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .lamp-footer i {
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .lamp-card:hover .lamp-footer i {
+            color: var(--accent-primary);
+            transform: translateX(5px);
+        }
+
+        /* Control Panel Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .control-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 35px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .panel-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: none;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Color Picker Section */
+        .color-section {
+            margin-bottom: 30px;
+        }
+
+        .color-section-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-picker-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 16px;
+        }
+
+        /* Scenario Section */
+        .scenario-section {
+            margin-bottom: 30px;
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .scenario-btn {
+            padding: 15px 10px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scenario-btn i {
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .scenario-btn:hover {
+            background: var(--bg-hover);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .scenario-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), #ff6b6b);
+            border-color: transparent;
+        }
+
+        .scenario-btn.active i {
+            color: white;
+        }
+
+        /* Two Color Mode */
+        .two-color-section {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 16px;
+        }
+
+        .two-color-section.active {
+            display: block;
+        }
+
+        .two-color-pickers {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .two-color-picker {
+            text-align: center;
+        }
+
+        .two-color-picker span {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff5a67;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            margin-top: 40px;
+        }
+
+        .quick-action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-action-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .quick-action-card:hover {
+            background: var(--bg-hover);
+            transform: translateX(5px);
+        }
+
+        .quick-action-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--accent-secondary), var(--bg-hover));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .quick-action-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .quick-action-info span {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Connection Status Bar */
+        .connection-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            padding: 12px 25px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .connection-bar .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .connection-bar.disconnected .status-indicator {
+            background: var(--danger);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-hover);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .lamp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scenario-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .control-panel {
+                padding: 25px;
+                width: 95%;
+            }
+
+            .two-color-pickers {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* IroSlider hide */
+        .IroSlider {
             display: none !important;
         }
-        .device-on{
-            background-color: #e6e7ff;
-            box-shadow: 0px 0px 25px black;
-            border-radius: 10px;
-            margin: 10px;
+
+        /* Brightness Slider */
+        .brightness-section {
+            margin-bottom: 30px;
         }
-        .closeLamp{
-            cursor:pointer;
+
+        .brightness-slider-wrapper {
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 16px;
         }
-        .close{
-            color:white;
-            background-color:black;
+
+        .brightness-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        .card{
-            margin-left: 25px;
-            margin-top: 15px;
+
+        .brightness-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-primary);
         }
-        #lamp1, #lamp2, #lamp3, #lamp4, #lamp5, #SSCAButton{
+
+        .brightness-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--bg-hover), var(--accent-primary));
+            outline: none;
+        }
+
+        .brightness-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
             cursor: pointer;
-            box-shadow: 0px 0px 25px #000;
-            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .brightness-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+        }
+
+        .brightness-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
-    <center class="text"><h1>BatLight Control Panel</h1></center>
-    <div class="container">
-        <center id="sinemSettings">
-            <h5 id="SSCAButton" onclick="setSinemSettings()" class="card">Set Sinem's settings to lamp</h5>
-        </center>
-    </div>
-    <div class="container">
-        <div class="row">
-            <!-- Batu'nun Kartı -->
-            <div class="card" id="lamp3" style="width: 14rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Batu's Desk</h5>
-                    <h6 class="card-subtitle mb-2 text-muted" id="status-lamp3"></h6>
+    <div class="bg-animation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="logo-text">
+                <h1>BatLight</h1>
+                <span>Smart Lighting Control</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="refreshStatus()">
+                <i class="fas fa-sync-alt"></i>
+                Refresh
+            </button>
+            <button class="btn btn-primary" onclick="setSinemSettings()">
+                <i class="fas fa-magic"></i>
+                Sinem's Preset
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <p class="section-title">Your Devices</p>
+
+        <!-- Lamp Grid -->
+        <div class="lamp-grid">
+            <!-- Batu's Desk -->
+            <div class="lamp-card" id="lamp3" onclick="openPanel(3, 'Batu\'s Desk')">
+                <div class="lamp-header">
+                    <div class="lamp-info">
+                        <h3>Batu's Desk</h3>
+                        <span>Workspace Light</span>
+                    </div>
+                    <div class="lamp-status offline" id="status-lamp3">
+                        <span class="status-dot"></span>
+                        <span>Offline</span>
+                    </div>
+                </div>
+                <div class="lamp-icon" id="icon-lamp3">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <div class="lamp-footer">
+                    <span>Click to control</span>
+                    <i class="fas fa-arrow-right"></i>
                 </div>
             </div>
-            <!-- Sinem'in Kartı -->
-            <div class="card" id="lamp2" style="width: 14rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Sinem's Desk</h5>
-                    <h6 class="card-subtitle mb-2 text-muted" id="status-lamp2"></h6>
+
+            <!-- Sinem's Desk -->
+            <div class="lamp-card" id="lamp2" onclick="openPanel(2, 'Sinem\'s Desk')">
+                <div class="lamp-header">
+                    <div class="lamp-info">
+                        <h3>Sinem's Desk</h3>
+                        <span>Workspace Light</span>
+                    </div>
+                    <div class="lamp-status offline" id="status-lamp2">
+                        <span class="status-dot"></span>
+                        <span>Offline</span>
+                    </div>
+                </div>
+                <div class="lamp-icon" id="icon-lamp2">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <div class="lamp-footer">
+                    <span>Click to control</span>
+                    <i class="fas fa-arrow-right"></i>
                 </div>
             </div>
-            <!-- TV Kartı -->
-            <div class="card" id="lamp1" style="width: 14rem;">
-                <div class="card-body">
-                    <h5 class="card-title">TV Light</h5>
-                    <h6 class="card-subtitle mb-2 text-muted" id="status-lamp1"></h6>
+
+            <!-- TV Light -->
+            <div class="lamp-card" id="lamp1" onclick="openPanel(1, 'TV Light')">
+                <div class="lamp-header">
+                    <div class="lamp-info">
+                        <h3>TV Light</h3>
+                        <span>Ambient Light</span>
+                    </div>
+                    <div class="lamp-status offline" id="status-lamp1">
+                        <span class="status-dot"></span>
+                        <span>Offline</span>
+                    </div>
+                </div>
+                <div class="lamp-icon" id="icon-lamp1">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <div class="lamp-footer">
+                    <span>Click to control</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+
+            <!-- Bed Light -->
+            <div class="lamp-card" id="lamp4" onclick="openPanel(4, 'Bed Light')">
+                <div class="lamp-header">
+                    <div class="lamp-info">
+                        <h3>Bed Light</h3>
+                        <span>Bedroom Light</span>
+                    </div>
+                    <div class="lamp-status offline" id="status-lamp4">
+                        <span class="status-dot"></span>
+                        <span>Offline</span>
+                    </div>
+                </div>
+                <div class="lamp-icon" id="icon-lamp4">
+                    <i class="fas fa-bed"></i>
+                </div>
+                <div class="lamp-footer">
+                    <span>Click to control</span>
+                    <i class="fas fa-arrow-right"></i>
                 </div>
             </div>
         </div>
-        <div class="row" id="client">
-            <!-- Batu'nun Paneli -->
-            <div class="device-on col-md-12" id="panel-lamp3">
-                <p class="closeLamp">
-                    <b onclick="minimize();" style="padding: 5px;">-</b>
-                    <b onclick="closeLamp(3);">X</b>
-                </p>
-                <center><h2>Batu's Desk</h2></center>
-                <div class="d-flex justify-content-center" id="picker3">
-                    <div class="wheel" id="colorWheel3"></div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <p class="section-title">Quick Actions</p>
+            <div class="quick-action-grid">
+                <div class="quick-action-card" onclick="allLightsOff()">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-power-off"></i>
+                    </div>
+                    <div class="quick-action-info">
+                        <h4>All Lights Off</h4>
+                        <span>Turn off all devices</span>
+                    </div>
                 </div>
-                <label>Scenario</label>
-                <select id="scenario3" class="form-control">
-                    <option value="">Select scenario</option>
-                    <option value="twoColor">Two Color</option>
-                    <option value="rainbow">Rainbow</option>
-                    <option value="fallin">Fallin</option>
-                    <option value="redVibe">Red Vibe</option>
-                    <option value="partyVibe">Party Vibe</option>
-                </select>
-                <div id="btnDiv3"></div>
-            </div>
-            <!-- Sinem'in Paneli -->
-            <div class="device-on col-md-12" id="panel-lamp2">
-                <p class="closeLamp">
-                    <b onclick="minimize();" style="padding: 5px;">-</b>
-                    <b onclick="closeLamp(2);">X</b>
-                </p>
-                <center><h2>Sinem's Desk</h2></center>
-                <div class="d-flex justify-content-center" id="picker2">
-                    <div class="wheel" id="colorWheel2"></div>
+                <div class="quick-action-card" onclick="setAllColor(255, 255, 255)">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="quick-action-info">
+                        <h4>Bright Mode</h4>
+                        <span>Set all to white</span>
+                    </div>
                 </div>
-                <label>Scenario</label>
-                <select id="scenario2" class="form-control">
-                    <option value="">Select scenario</option>
-                    <option value="twoColor">Two Color</option>
-                    <option value="rainbow">Rainbow</option>
-                    <option value="fallin">Fallin</option>
-                    <option value="redVibe">Red Vibe</option>
-                    <option value="partyVibe">Party Vibe</option>
-                </select>
-                <div id="btnDiv2"></div>
-            </div>
-            <!-- TV Paneli -->
-            <div class="device-on col-md-12" id="panel-lamp1">
-                <p class="closeLamp">
-                    <b onclick="minimize();" style="padding: 5px;">-</b>
-                    <b onclick="closeLamp(1);">X</b>
-                </p>
-                <center><h2>TV Light</h2></center>
-                <div class="d-flex justify-content-center" id="picker1">
-                    <div class="wheel" id="colorWheel1"></div>
+                <div class="quick-action-card" onclick="setAllAnimation('rainbow')">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-rainbow"></i>
+                    </div>
+                    <div class="quick-action-info">
+                        <h4>Party Mode</h4>
+                        <span>Rainbow on all lights</span>
+                    </div>
                 </div>
-                <label>Scenario</label>
-                <select id="scenario1" class="form-control">
-                    <option value="">Select scenario</option>
-                    <option value="twoColor">Two Color</option>
-                    <option value="rainbow">Rainbow</option>
-                    <option value="fallin">Fallin</option>
-                    <option value="redVibe">Red Vibe</option>
-                </select>
-                <div id="btnDiv1"></div>
+                <div class="quick-action-card" onclick="setAllAnimation('candle')">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="quick-action-info">
+                        <h4>Cozy Mode</h4>
+                        <span>Candle effect</span>
+                    </div>
+                </div>
             </div>
         </div>
+    </main>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closePanel()"></div>
+
+    <!-- Control Panel -->
+    <div class="control-panel" id="controlPanel">
+        <div class="panel-header">
+            <h2 id="panelTitle">Lamp Control</h2>
+            <button class="close-btn" onclick="closePanel()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Color Picker -->
+        <div class="color-section">
+            <p class="color-section-title">
+                <i class="fas fa-palette"></i>
+                Choose Color
+            </p>
+            <div class="color-picker-wrapper">
+                <div id="colorPicker"></div>
+            </div>
+        </div>
+
+        <!-- Brightness Slider -->
+        <div class="brightness-section">
+            <p class="color-section-title">
+                <i class="fas fa-sun"></i>
+                Brightness
+            </p>
+            <div class="brightness-slider-wrapper">
+                <div class="brightness-header">
+                    <span>Adjust brightness</span>
+                    <span class="brightness-value" id="brightnessValue">100%</span>
+                </div>
+                <input type="range" class="brightness-slider" id="brightnessSlider" min="0" max="255" value="255">
+            </div>
+        </div>
+
+        <!-- Scenarios -->
+        <div class="scenario-section">
+            <p class="color-section-title">
+                <i class="fas fa-magic"></i>
+                Animations
+            </p>
+            <div class="scenario-grid">
+                <button class="scenario-btn" data-scenario="rainbow">
+                    <i class="fas fa-rainbow"></i>
+                    Rainbow
+                </button>
+                <button class="scenario-btn" data-scenario="breathing">
+                    <i class="fas fa-wind"></i>
+                    Breathing
+                </button>
+                <button class="scenario-btn" data-scenario="fire">
+                    <i class="fas fa-fire-alt"></i>
+                    Fire
+                </button>
+                <button class="scenario-btn" data-scenario="candle">
+                    <i class="fas fa-fire"></i>
+                    Candle
+                </button>
+                <button class="scenario-btn" data-scenario="aurora">
+                    <i class="fas fa-star"></i>
+                    Aurora
+                </button>
+                <button class="scenario-btn" data-scenario="meteor">
+                    <i class="fas fa-meteor"></i>
+                    Meteor
+                </button>
+                <button class="scenario-btn" data-scenario="colorCycle">
+                    <i class="fas fa-sync"></i>
+                    Color Cycle
+                </button>
+                <button class="scenario-btn" data-scenario="fallin">
+                    <i class="fas fa-chevron-down"></i>
+                    Fallin
+                </button>
+                <button class="scenario-btn" data-scenario="redVibe">
+                    <i class="fas fa-heart"></i>
+                    Red Vibe
+                </button>
+                <button class="scenario-btn" data-scenario="twoColor">
+                    <i class="fas fa-adjust"></i>
+                    Two Color
+                </button>
+            </div>
+        </div>
+
+        <!-- Two Color Section -->
+        <div class="two-color-section" id="twoColorSection">
+            <p class="color-section-title">
+                <i class="fas fa-palette"></i>
+                Select Two Colors
+            </p>
+            <div class="two-color-pickers">
+                <div class="two-color-picker">
+                    <span>Color 1</span>
+                    <div id="colorPickerA"></div>
+                </div>
+                <div class="two-color-picker">
+                    <span>Color 2</span>
+                    <div id="colorPickerB"></div>
+                </div>
+            </div>
+            <div class="action-buttons" style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="applyTwoColor()">
+                    <i class="fas fa-check"></i>
+                    Apply Colors
+                </button>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="closePanel()">
+                <i class="fas fa-minus"></i>
+                Minimize
+            </button>
+            <button class="btn btn-danger" onclick="turnOffCurrentLamp()">
+                <i class="fas fa-power-off"></i>
+                Turn Off
+            </button>
+        </div>
     </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
-    // ❌ Eski kod:
-    // let ws = new WebSocket("ws://35.188.173.59:3000/");
-    
-    // ✅ Yeni kod - server.batproduct.com subdomain üzerinden:
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const apiDomain = window.location.hostname === 'batproduct.com' ? 'server.batproduct.com' : window.location.host;
-    let ws = new WebSocket(protocol + '//' + apiDomain + '/');
-    
-    // WebSocket bağlantı durumunu kontrol edin
-    ws.onopen = function(event) {
-        console.log('WebSocket bağlantısı kuruldu:', event);
-    };
-    
-    ws.onerror = function(error) {
-        console.error('WebSocket hatası:', error);
-    };
-    
-    ws.onclose = function(event) {
-        console.log('WebSocket bağlantısı kapandı:', event);
-    };
-</script>
-<script src="app.js"></script>
+
+    <!-- Connection Status Bar -->
+    <div class="connection-bar" id="connectionBar">
+        <span class="status-indicator"></span>
+        <span id="connectionText">Connecting...</span>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // WebSocket Connection
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        let apiDomain;
+        if (window.location.hostname === 'batproduct.com') {
+            apiDomain = 'server.batproduct.com';
+        } else if (window.location.host) {
+            apiDomain = window.location.host;
+        } else {
+            apiDomain = '35.188.173.59:3000';
+        }
+
+        let ws;
+        let currentLampId = null;
+        let colorPicker = null;
+        let colorPickerA = null;
+        let colorPickerB = null;
+        let activeScenario = null;
+
+        // Initialize WebSocket
+        function initWebSocket() {
+            ws = new WebSocket(protocol + '//' + apiDomain + '/');
+
+            ws.onopen = function() {
+                console.log('WebSocket connected');
+                updateConnectionStatus(true);
+                checkAllDevices();
+            };
+
+            ws.onmessage = function({ data }) {
+                const response = JSON.parse(data);
+                if (response.action === "allive") {
+                    setDeviceOnline(response.deviceid);
+                }
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                updateConnectionStatus(false);
+            };
+
+            ws.onclose = function() {
+                console.log('WebSocket closed');
+                updateConnectionStatus(false);
+                // Reconnect after 5 seconds
+                setTimeout(initWebSocket, 5000);
+            };
+        }
+
+        // Update connection status
+        function updateConnectionStatus(connected) {
+            const bar = document.getElementById('connectionBar');
+            const text = document.getElementById('connectionText');
+
+            if (connected) {
+                bar.classList.remove('disconnected');
+                text.textContent = 'Connected to server';
+            } else {
+                bar.classList.add('disconnected');
+                text.textContent = 'Disconnected - Reconnecting...';
+            }
+        }
+
+        // Check all devices
+        function checkAllDevices() {
+            [1, 2, 3, 4, 5].forEach(id => {
+                sendMessage({ deviceid: id, action: "alliveCheck" });
+            });
+        }
+
+        // Set device online
+        function setDeviceOnline(deviceId) {
+            const statusEl = document.getElementById('status-lamp' + deviceId);
+            if (statusEl) {
+                statusEl.classList.remove('offline');
+                statusEl.innerHTML = '<span class="status-dot"></span><span>Online</span>';
+            }
+        }
+
+        // Send message
+        function sendMessage(data) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ message: data }));
+            }
+        }
+
+        // Send color
+        function sendColor(lampId, r, g, b) {
+            sendMessage({
+                deviceid: lampId,
+                animation: "",
+                R: r,
+                G: g,
+                B: b
+            });
+            updateLampIconColor(lampId, r, g, b);
+        }
+
+        // Send scenario
+        function sendScenario(lampId, scenario) {
+            sendMessage({
+                deviceid: lampId,
+                animation: scenario
+            });
+        }
+
+        // Send brightness
+        function sendBrightness(lampId, brightness) {
+            sendMessage({
+                deviceid: lampId,
+                brightness: brightness
+            });
+        }
+
+        // Update lamp icon color
+        function updateLampIconColor(lampId, r, g, b) {
+            const icon = document.getElementById('icon-lamp' + lampId);
+            if (icon) {
+                icon.style.background = `linear-gradient(135deg, rgb(${r}, ${g}, ${b}), rgba(${r}, ${g}, ${b}, 0.5))`;
+                icon.style.boxShadow = `0 0 30px rgba(${r}, ${g}, ${b}, 0.5)`;
+            }
+        }
+
+        // Open control panel
+        function openPanel(lampId, lampName) {
+            currentLampId = lampId;
+            document.getElementById('panelTitle').textContent = lampName;
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('controlPanel').classList.add('active');
+
+            // Reset scenario buttons
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeScenario = null;
+
+            // Hide two color section
+            document.getElementById('twoColorSection').classList.remove('active');
+
+            // Initialize color picker if not exists
+            if (!colorPicker) {
+                colorPicker = new iro.ColorPicker('#colorPicker', {
+                    width: 200,
+                    color: "#ff6b6b"
+                });
+
+                colorPicker.on('color:change', function(color) {
+                    if (currentLampId && !activeScenario) {
+                        sendColor(currentLampId, color.rgb.r, color.rgb.g, color.rgb.b);
+                    }
+                });
+
+                // Initialize brightness slider
+                document.getElementById('brightnessSlider').addEventListener('input', function() {
+                    const value = parseInt(this.value);
+                    const percentage = Math.round((value / 255) * 100);
+                    document.getElementById('brightnessValue').textContent = percentage + '%';
+                    if (currentLampId) {
+                        sendBrightness(currentLampId, value);
+                    }
+                });
+            }
+
+            // Kaydedilmiş state'i uygula
+            applyStateToPanel(lampId);
+        }
+
+        // Close control panel
+        function closePanel() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('controlPanel').classList.remove('active');
+            currentLampId = null;
+        }
+
+        // Handle scenario click
+        document.querySelectorAll('.scenario-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const scenario = this.dataset.scenario;
+
+                // Update active state
+                document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                activeScenario = scenario;
+
+                // Handle two color mode
+                if (scenario === 'twoColor') {
+                    document.getElementById('twoColorSection').classList.add('active');
+                    initTwoColorPickers();
+                } else {
+                    document.getElementById('twoColorSection').classList.remove('active');
+                    if (currentLampId) {
+                        sendScenario(currentLampId, scenario);
+                    }
+                }
+            });
+        });
+
+        // Initialize two color pickers
+        function initTwoColorPickers() {
+            if (!colorPickerA) {
+                colorPickerA = new iro.ColorPicker('#colorPickerA', {
+                    width: 150,
+                    color: "#ff6b6b"
+                });
+            }
+            if (!colorPickerB) {
+                colorPickerB = new iro.ColorPicker('#colorPickerB', {
+                    width: 150,
+                    color: "#6b6bff"
+                });
+            }
+        }
+
+        // Apply two color
+        function applyTwoColor() {
+            if (currentLampId && colorPickerA && colorPickerB) {
+                const c1 = colorPickerA.color.rgb;
+                const c2 = colorPickerB.color.rgb;
+
+                sendMessage({
+                    deviceid: currentLampId,
+                    animation: "2color",
+                    fr: c1.r, fg: c1.g, fb: c1.b,
+                    sr: c2.r, sg: c2.g, sb: c2.b
+                });
+            }
+        }
+
+        // Turn off current lamp
+        function turnOffCurrentLamp() {
+            if (currentLampId) {
+                sendColor(currentLampId, 0, 0, 0);
+                closePanel();
+            }
+        }
+
+        // All lights off
+        function allLightsOff() {
+            [1, 2, 3, 4, 5].forEach(id => sendColor(id, 0, 0, 0));
+        }
+
+        // Set all color
+        function setAllColor(r, g, b) {
+            [1, 2, 3, 4, 5].forEach(id => sendColor(id, r, g, b));
+        }
+
+        // Set all animation
+        function setAllAnimation(animation) {
+            [1, 2, 3, 4, 5].forEach(id => sendScenario(id, animation));
+        }
+
+        // Set Sinem's settings
+        function setSinemSettings() {
+            sendColor(1, 255, 112, 51);  // TV
+            sendColor(2, 85, 0, 255);    // Sinem
+            sendColor(3, 255, 112, 51);  // Batu
+            sendColor(5, 255, 84, 41);   // Wall
+        }
+
+        // Refresh status
+        function refreshStatus() {
+            // Reset all to offline
+            [1, 2, 3, 4, 5].forEach(id => {
+                const statusEl = document.getElementById('status-lamp' + id);
+                if (statusEl) {
+                    statusEl.classList.add('offline');
+                    statusEl.innerHTML = '<span class="status-dot"></span><span>Checking...</span>';
+                }
+            });
+            checkAllDevices();
+        }
+
+        // Kaydedilmiş state
+        let savedState = {};
+
+        // RGB to Hex converter
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+
+        // State'i yükle
+        function loadSavedState() {
+            fetch('/api/state')
+                .then(response => response.json())
+                .then(state => {
+                    console.log('State yüklendi:', state);
+                    savedState = state;
+
+                    // Lamba ikonlarının renklerini güncelle
+                    [1, 2, 3, 4, 5].forEach(id => {
+                        if (state[id] && state[id].R !== undefined) {
+                            updateLampIconColor(id, state[id].R, state[id].G, state[id].B);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.log('State yüklenemedi:', error);
+                });
+        }
+
+        // Panel açıldığında state'i uygula
+        function applyStateToPanel(lampId) {
+            if (savedState[lampId]) {
+                const lampState = savedState[lampId];
+
+                // Color picker'ı güncelle
+                if (colorPicker && lampState.R !== undefined) {
+                    const hexColor = rgbToHex(lampState.R, lampState.G, lampState.B);
+                    colorPicker.color.hexString = hexColor;
+                }
+
+                // Brightness slider'ı güncelle
+                if (lampState.brightness !== undefined) {
+                    document.getElementById('brightnessSlider').value = lampState.brightness;
+                    const percentage = Math.round((lampState.brightness / 255) * 100);
+                    document.getElementById('brightnessValue').textContent = percentage + '%';
+                }
+
+                // Aktif animasyonu göster
+                if (lampState.animation && lampState.animation !== '') {
+                    document.querySelectorAll('.scenario-btn').forEach(btn => {
+                        if (btn.dataset.scenario === lampState.animation) {
+                            btn.classList.add('active');
+                            activeScenario = lampState.animation;
+                        }
+                    });
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initWebSocket();
+            loadSavedState();
+        });
+    </script>
 </body>
 </html>

@@ -5,16 +5,63 @@ let colorWheels = {};
 $(document).ready(function() {
     // Renk tekerleklerini başlat
     initColorWheels();
-    
+
     // Tüm panelleri gizle
     hideAllPanels();
-    
+
     // Olay dinleyicilerini ayarla
     setupEventListeners();
-    
+
     // WebSocket olaylarını ayarla
     setupWebSocket();
+
+    // Kaydedilmiş durumu yükle
+    loadSavedState();
 });
+
+// Kaydedilmiş durumu yükle
+function loadSavedState() {
+    fetch('/api/state')
+        .then(response => response.json())
+        .then(state => {
+            console.log('State yüklendi:', state);
+            // Her lamba için durumu uygula
+            [1, 2, 3, 4].forEach(function(lampId) {
+                if (state[lampId]) {
+                    const lampState = state[lampId];
+
+                    // Color wheel'ı güncelle
+                    if (colorWheels['lamp' + lampId] && lampState.R !== undefined) {
+                        const hexColor = rgbToHex(lampState.R, lampState.G, lampState.B);
+                        colorWheels['lamp' + lampId].color.hexString = hexColor;
+                    }
+
+                    // Brightness slider'ı güncelle
+                    if (lampState.brightness !== undefined) {
+                        $('#brightness' + lampId).val(lampState.brightness);
+                        var percentage = Math.round((lampState.brightness / 255) * 100);
+                        $('#brightnessValue' + lampId).text(percentage);
+                    }
+
+                    // Senaryo dropdown'ını güncelle
+                    if (lampState.animation) {
+                        $('#scenario' + lampId).val(lampState.animation);
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.log('State yüklenemedi:', error);
+        });
+}
+
+// RGB to Hex converter
+function rgbToHex(r, g, b) {
+    return '#' + [r, g, b].map(x => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    }).join('');
+}
 
 // Renk tekerleklerini başlat
 function initColorWheels() {
@@ -22,7 +69,8 @@ function initColorWheels() {
     colorWheels.lamp1 = new iro.ColorPicker("#colorWheel1");
     colorWheels.lamp2 = new iro.ColorPicker("#colorWheel2");
     colorWheels.lamp3 = new iro.ColorPicker("#colorWheel3");
-    
+    colorWheels.lamp4 = new iro.ColorPicker("#colorWheel4");
+
     // Ana renk tekerleği olaylarını ayarla
     setupColorWheelEvents();
 }
@@ -33,6 +81,7 @@ function hideAllPanels() {
     $('#panel-lamp1').hide();
     $('#panel-lamp2').hide();
     $('#panel-lamp3').hide();
+    $('#panel-lamp4').hide();
 }
 
 // Olay dinleyicilerini ayarla
@@ -41,15 +90,19 @@ function setupEventListeners() {
     $('#lamp1').click(function() {
         showPanel('panel-lamp1');
     });
-    
+
     $('#lamp2').click(function() {
         showPanel('panel-lamp2');
     });
-    
+
     $('#lamp3').click(function() {
         showPanel('panel-lamp3');
     });
-    
+
+    $('#lamp4').click(function() {
+        showPanel('panel-lamp4');
+    });
+
     // Senaryo değişikliği
     setupScenarioEvents();
 }
@@ -67,15 +120,20 @@ function setupColorWheelEvents() {
     colorWheels.lamp1.on('color:change', function(color) {
         sendColor(1, color.rgb.r, color.rgb.g, color.rgb.b);
     });
-    
+
     // Sinem'in masası - Lamba 2
     colorWheels.lamp2.on('color:change', function(color) {
         sendColor(2, color.rgb.r, color.rgb.g, color.rgb.b);
     });
-    
+
     // Batu'nun masası - Lamba 3
     colorWheels.lamp3.on('color:change', function(color) {
         sendColor(3, color.rgb.r, color.rgb.g, color.rgb.b);
+    });
+
+    // Bed Light - Lamba 4
+    colorWheels.lamp4.on('color:change', function(color) {
+        sendColor(4, color.rgb.r, color.rgb.g, color.rgb.b);
     });
 }
 
@@ -85,16 +143,46 @@ function setupScenarioEvents() {
     $('#scenario1').change(function() {
         handleScenarioChange(1, $(this).val());
     });
-    
+
     // Sinem'in Lambası senaryosu
     $('#scenario2').change(function() {
         handleScenarioChange(2, $(this).val());
     });
-    
+
     // Batu'nun Lambası senaryosu
     $('#scenario3').change(function() {
         handleScenarioChange(3, $(this).val());
     });
+
+    // Bed Light senaryosu
+    $('#scenario4').change(function() {
+        handleScenarioChange(4, $(this).val());
+    });
+
+    // Parlaklık olaylarını ayarla
+    setupBrightnessEvents();
+}
+
+// Parlaklık olaylarını ayarla
+function setupBrightnessEvents() {
+    [1, 2, 3, 4].forEach(function(lampId) {
+        $('#brightness' + lampId).on('input', function() {
+            var value = $(this).val();
+            var percentage = Math.round((value / 255) * 100);
+            $('#brightnessValue' + lampId).text(percentage);
+            sendBrightness(lampId, parseInt(value));
+        });
+    });
+}
+
+// Parlaklık gönder
+function sendBrightness(lampId, brightness) {
+    var sendString = {
+        deviceid: lampId,
+        brightness: brightness
+    };
+
+    ws.send("{\"message\":" + JSON.stringify(sendString) + "}");
 }
 
 // WebSocket ayarla
@@ -116,7 +204,7 @@ function setupWebSocket() {
 
 // Tüm cihazların durumunu kontrol et
 function checkAllDevices() {
-    [1, 2, 3, 5].forEach(function(deviceId) {
+    [1, 2, 3, 4, 5].forEach(function(deviceId) {
         checkDeviceStatus(deviceId);
     });
 }
